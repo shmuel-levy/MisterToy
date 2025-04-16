@@ -1,0 +1,20 @@
+/*  Setup */
+/* @import 'setup/variables.css';
+@import 'setup/functions';
+@import 'setup/mixins';
+@import 'setup/typography'; */
+
+/* Basics */
+/* @import 'basics/helpers'; */
+@import 'basics/layout.css';
+@import 'basics/base.css';
+
+/* Components */
+@import 'components/app-header.css';
+@import 'components/app-footer.css';
+/* @import 'components/toy-list';
+@import 'components/toy-preview';
+@import 'components/toy-filter';
+@import 'components/toy-details';
+@import 'components/toy-edit';
+@import 'components/user-msg'; */
