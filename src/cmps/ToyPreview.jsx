@@ -19,5 +19,5 @@ export function ToyPreview({ toy }) {
                 </div>
             </div>
         </article>
-    );
+    )
 }
