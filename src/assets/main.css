@@ -12,9 +12,13 @@
 /* Components */
 @import 'components/app-header.css';
 @import 'components/app-footer.css';
-@import 'components/toy-list';
-@import 'components/toy-preview';
-@import 'components/toy-index';
+@import 'components/toy-list.css';
+@import 'components/toy-preview.css';
+@import 'components/toy-index.css';
+@import 'components/toy-home.css';
+/* @import 'components/toy-filter'; */
+@import 'components/toy-about.css';
+
 /* @import 'components/toy-details';
 @import 'components/toy-edit';
 @import 'components/user-msg';  */
