@@ -1,0 +1,71 @@
+.toy-details {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 25px;
+    margin-top: 20px;
+  }
+  
+  .toy-details-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .toy-details-header .btn-back {
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    margin-right: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .toy-details-header .btn-back:hover {
+    background-color: #7f8c8d;
+  }
+  
+  .toy-details-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 30px;
+  }
+  
+  .toy-image {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .toy-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .toy-info {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .btn-edit {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-edit:hover {
+    background-color: #2980b9;
+  }

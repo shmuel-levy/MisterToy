@@ -16,9 +16,9 @@
 @import 'components/toy-preview.css';
 @import 'components/toy-index.css';
 @import 'components/toy-home.css';
-/* @import 'components/toy-filter'; */
+@import 'components/toy-filter.css';
 @import 'components/toy-about.css';
 
-/* @import 'components/toy-details';
-@import 'components/toy-edit';
-@import 'components/user-msg';  */
+@import 'components/toy-details.css'; 
+@import 'components/toy-edit.css';
+@import 'components/user-msg.css';  

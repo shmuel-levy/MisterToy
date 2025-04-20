@@ -3,7 +3,7 @@ import { ToyList } from '../cmps/ToyList.jsx';
 import { ToyFilter } from '../cmps/ToyFilter.jsx';
 import { toyService } from '../services/toy.service.js';
 
-export function ToyIndex() {
+export function ToyIndex({ onSelectToy, onAddToy }) {
     const [toys, setToys] = useState([]);
     const [filterBy, setFilterBy] = useState(toyService.getDefaultFilter());
     const [isLoading, setIsLoading] = useState(false);
@@ -38,15 +38,11 @@ export function ToyIndex() {
         }
     }
     
-    function onSelectToy(toyId) {
-        console.log('Selected toy ID:', toyId);
-    }
-    
     return (
         <section className="toy-index">
             <div className="index-header">
                 <h1>Our Toy Collection</h1>
-                <button className="btn-add">Add New Toy</button>
+                <button className="btn-add" onClick={onAddToy}>Add New Toy</button>
             </div>
             
             <ToyFilter onSetFilter={onSetFilter} />
