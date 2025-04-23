@@ -24,5 +24,5 @@ export function About() {
           </div>
         </div>
       </section>
-    );
+    )
   }

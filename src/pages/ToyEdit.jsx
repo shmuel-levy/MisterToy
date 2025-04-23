@@ -1,90 +1,90 @@
-import { useState, useEffect } from 'react';
-import { toyService } from '../services/toy.service.js';
-import { useUnsavedChanges } from '../hooks/useUnsavedChanges.js';
+import { useState, useEffect } from 'react'
+import { toyService } from '../services/toy.service.js'
+import { useUnsavedChanges } from '../hooks/useUnsavedChanges.js'
 
 export function ToyEdit({ toyId, onSaveToy, onCancel }) {
-  const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy());
-  const [originalToy, setOriginalToy] = useState(null);
-  const [labels, setLabels] = useState([]);
-  const [isModified, setIsModified] = useState(false);
+  const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy())
+  const [originalToy, setOriginalToy] = useState(null)
+  const [labels, setLabels] = useState([])
+  const [isModified, setIsModified] = useState(false)
   
   // Use our custom hook
-  const showUnsavedChangesPrompt = useUnsavedChanges(isModified);
+  const showUnsavedChangesPrompt = useUnsavedChanges(isModified)
 
   useEffect(() => {
-    loadLabels();
-    if (toyId) loadToy();
-  }, []);
+    loadLabels()
+    if (toyId) loadToy()
+  }, [])
   
   // Check for modifications
   useEffect(() => {
-    if (!originalToy) return;
+    if (!originalToy) return
     
     // Compare current state with original
-    const isChanged = JSON.stringify(toyToEdit) !== JSON.stringify(originalToy);
-    setIsModified(isChanged);
-  }, [toyToEdit, originalToy]);
+    const isChanged = JSON.stringify(toyToEdit) !== JSON.stringify(originalToy)
+    setIsModified(isChanged)
+  }, [toyToEdit, originalToy])
 
   function loadToy() {
     try {
-      const toy = toyService.getById(toyId);
-      setToyToEdit(toy);
-      setOriginalToy(JSON.parse(JSON.stringify(toy))); // Deep copy
+      const toy = toyService.getById(toyId)
+      setToyToEdit(toy)
+      setOriginalToy(JSON.parse(JSON.stringify(toy))) // Deep copy
     } catch (err) {
-      console.error('Error loading toy for edit:', err);
-      onCancel();
+      console.error('Error loading toy for edit:', err)
+      onCancel()
     }
   }
 
   function loadLabels() {
-    const labels = toyService.getLabels();
-    setLabels(labels);
+    const labels = toyService.getLabels()
+    setLabels(labels)
   }
 
   function handleChange({ target }) {
-    const { name, value, type, checked } = target;
+    const { name, value, type, checked } = target
     
     // Handle different input types
     const val = type === 'number' ? +value : 
                type === 'checkbox' ? checked : 
-               value;
+               value
     
-    setToyToEdit(prevToy => ({ ...prevToy, [name]: val }));
+    setToyToEdit(prevToy => ({ ...prevToy, [name]: val }))
   }
 
   function handleLabelChange(selectedLabel) {
-    const updatedLabels = [...toyToEdit.labels];
-    const labelIndex = updatedLabels.indexOf(selectedLabel);
+    const updatedLabels = [...toyToEdit.labels]
+    const labelIndex = updatedLabels.indexOf(selectedLabel)
     
     if (labelIndex === -1) {
-      updatedLabels.push(selectedLabel);
+      updatedLabels.push(selectedLabel)
     } else {
-      updatedLabels.splice(labelIndex, 1);
+      updatedLabels.splice(labelIndex, 1)
     }
     
     setToyToEdit(prevToy => ({
       ...prevToy,
       labels: updatedLabels
-    }));
+    }))
   }
 
   function handleCancel() {
     if (isModified) {
-      const confirmLeave = window.confirm('You have unsaved changes. Are you sure you want to leave?');
-      if (!confirmLeave) return;
+      const confirmLeave = window.confirm('You have unsaved changes. Are you sure you want to leave?')
+      if (!confirmLeave) return
     }
-    onCancel();
+    onCancel()
   }
 
   function onSubmitForm(ev) {
-    ev.preventDefault();
+    ev.preventDefault()
     
     try {
-      const savedToy = toyService.save(toyToEdit);
-      setIsModified(false);
-      onSaveToy(savedToy);
+      const savedToy = toyService.save(toyToEdit)
+      setIsModified(false)
+      onSaveToy(savedToy)
     } catch (err) {
-      console.error('Error saving toy:', err);
+      console.error('Error saving toy:', err)
     }
   }
 
@@ -177,5 +177,5 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
         </div>
       </form>
     </section>
-  );
+  )
 }

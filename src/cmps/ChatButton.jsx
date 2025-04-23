@@ -1,13 +1,13 @@
 // src/cmps/ChatButton.jsx
-import { useState } from 'react';
-import { Chat } from './Chat';
-import { PopUp } from './PopUp';
+import { useState } from 'react'
+import { Chat } from './Chat'
+import { PopUp } from './PopUp'
 
 export function ChatButton() {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
 
   function togglePopup() {
-    setIsPopupOpen(prevState => !prevState);
+    setIsPopupOpen(prevState => !prevState)
   }
 
   return (
@@ -25,5 +25,5 @@ export function ChatButton() {
         <Chat />
       </PopUp>
     </>
-  );
+  )
 }

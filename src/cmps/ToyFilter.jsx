@@ -1,42 +1,42 @@
-import { useState, useEffect } from 'react';
-import { toyService } from '../services/toy.service.js';
+import { useState, useEffect } from 'react'
+import { toyService } from '../services/toy.service.js'
 
 export function ToyFilter({ onSetFilter }) {
-    const [filterBy, setFilterBy] = useState(toyService.getDefaultFilter());
-    const [labels, setLabels] = useState([]);
+    const [filterBy, setFilterBy] = useState(toyService.getDefaultFilter())
+    const [labels, setLabels] = useState([])
     
     useEffect(() => {
-        setLabels(toyService.getLabels());
-    }, []);
+        setLabels(toyService.getLabels())
+    }, [])
     
     useEffect(() => {
-        onSetFilter(filterBy);
-    }, [filterBy]);
+        onSetFilter(filterBy)
+    }, [filterBy])
     
     function handleChange({ target }) {
-        const { name, value, type } = target;
+        const { name, value, type } = target
         
-        let updatedValue = value;
+        let updatedValue = value
         if (name === 'inStock') {
-            if (value === 'true') updatedValue = true;
-            else if (value === 'false') updatedValue = false;
-            else updatedValue = null;
+            if (value === 'true') updatedValue = true
+            else if (value === 'false') updatedValue = false
+            else updatedValue = null
         }
         
-        setFilterBy(prevFilter => ({ ...prevFilter, [name]: updatedValue }));
+        setFilterBy(prevFilter => ({ ...prevFilter, [name]: updatedValue }))
     }
     
     function handleLabelChange(label) {
-        const updatedLabels = [...filterBy.labels];
-        const idx = updatedLabels.findIndex(currLabel => currLabel === label);
+        const updatedLabels = [...filterBy.labels]
+        const idx = updatedLabels.findIndex(currLabel => currLabel === label)
         
         if (idx < 0) {
-            updatedLabels.push(label);
+            updatedLabels.push(label)
         } else {
-            updatedLabels.splice(idx, 1);
+            updatedLabels.splice(idx, 1)
         }
         
-        setFilterBy(prevFilter => ({ ...prevFilter, labels: updatedLabels }));
+        setFilterBy(prevFilter => ({ ...prevFilter, labels: updatedLabels }))
     }
     
     return (
@@ -101,5 +101,5 @@ export function ToyFilter({ onSetFilter }) {
                 </div>
             </div>
         </section>
-    );
+    )
 }

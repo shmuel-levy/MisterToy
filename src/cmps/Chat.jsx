@@ -16,7 +16,7 @@ export function Chat() {
       msgsRef.current.scrollTo({
         top: msgsRef.current.scrollHeight,
         behavior: "smooth",
-      });
+      })
     }
   }, [msgs])
 

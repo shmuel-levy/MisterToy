@@ -30,5 +30,5 @@ export function AppHeader({ onSetPage, currentPage }) {
         </nav>
       </div>
     </header>
-  );
+  )
 }

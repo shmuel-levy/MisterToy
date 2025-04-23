@@ -1,24 +1,24 @@
-import { useState, useEffect } from 'react';
-import { toyService } from '../services/toy.service.js';
+import { useState, useEffect } from 'react'
+import { toyService } from '../services/toy.service.js'
 
 export function ToyDetails({ toyId, onBack, onEdit }) {
-  const [toy, setToy] = useState(null);
+  const [toy, setToy] = useState(null)
 
   useEffect(() => {
-    loadToy();
-  }, []);
+    loadToy()
+  }, [])
 
   function loadToy() {
     try {
-      const toy = toyService.getById(toyId);
-      setToy(toy);
+      const toy = toyService.getById(toyId)
+      setToy(toy)
     } catch (err) {
-      console.error('Error loading toy details:', err);
-      onBack();
+      console.error('Error loading toy details:', err)
+      onBack()
     }
   }
 
-  if (!toy) return <div className="loading">Loading...</div>;
+  if (!toy) return <div className="loading">Loading...</div>
 
   return (
     <section className="toy-details">
@@ -60,5 +60,5 @@ export function ToyDetails({ toyId, onBack, onEdit }) {
         <button className="btn-edit" onClick={onEdit}>Edit</button>
       </div>
     </section>
-  );
+  )
 }
