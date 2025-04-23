@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { toyService } from '../services/toy.service.js'
+import { toyService } from '../services/toy.service-remote.js' 
 import { useUnsavedChanges } from '../hooks/useUnsavedChanges.js'
 
 export function ToyEdit({ toyId, onSaveToy, onCancel }) {
@@ -8,7 +8,6 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
   const [labels, setLabels] = useState([])
   const [isModified, setIsModified] = useState(false)
   
-  // Use our custom hook
   const showUnsavedChangesPrompt = useUnsavedChanges(isModified)
 
   useEffect(() => {
@@ -16,24 +15,23 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
     if (toyId) loadToy()
   }, [])
   
-  // Check for modifications
   useEffect(() => {
     if (!originalToy) return
     
-    // Compare current state with original
     const isChanged = JSON.stringify(toyToEdit) !== JSON.stringify(originalToy)
     setIsModified(isChanged)
   }, [toyToEdit, originalToy])
 
   function loadToy() {
-    try {
-      const toy = toyService.getById(toyId)
-      setToyToEdit(toy)
-      setOriginalToy(JSON.parse(JSON.stringify(toy))) // Deep copy
-    } catch (err) {
-      console.error('Error loading toy for edit:', err)
-      onCancel()
-    }
+    toyService.getById(toyId)
+      .then(toy => {
+        setToyToEdit(toy)
+        setOriginalToy(JSON.parse(JSON.stringify(toy))) 
+      })
+      .catch(err => {
+        console.error('Error loading toy for edit:', err)
+        onCancel()
+      })
   }
 
   function loadLabels() {
@@ -44,7 +42,6 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
   function handleChange({ target }) {
     const { name, value, type, checked } = target
     
-    // Handle different input types
     const val = type === 'number' ? +value : 
                type === 'checkbox' ? checked : 
                value
@@ -79,13 +76,14 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
   function onSubmitForm(ev) {
     ev.preventDefault()
     
-    try {
-      const savedToy = toyService.save(toyToEdit)
-      setIsModified(false)
-      onSaveToy(savedToy)
-    } catch (err) {
-      console.error('Error saving toy:', err)
-    }
+    toyService.save(toyToEdit)
+      .then(savedToy => {
+        setIsModified(false)
+        onSaveToy(savedToy)
+      })
+      .catch(err => {
+        console.error('Error saving toy:', err)
+      })
   }
 
   return (
@@ -132,13 +130,20 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
             type="text"
             id="imgUrl"
             name="imgUrl"
-            value={toyToEdit.imgUrl}
+            value={toyToEdit.imgUrl || ''}
             onChange={handleChange}
             placeholder="Enter image URL"
           />
           {toyToEdit.imgUrl && (
             <div className="img-preview">
-              <img src={toyToEdit.imgUrl} alt="Toy preview" />
+              <img 
+                src={toyToEdit.imgUrl} 
+                alt="Toy preview" 
+                onError={(e) => {
+                  e.target.src = 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg'
+                  e.target.onerror = null
+                }}
+              />
             </div>
           )}
         </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { toyService } from '../services/toy.service.js'
+import { toyService } from '../services/toy.service-remote.js' 
 
 export function ToyFilter({ onSetFilter }) {
     const [filterBy, setFilterBy] = useState(toyService.getDefaultFilter())
@@ -14,92 +14,94 @@ export function ToyFilter({ onSetFilter }) {
     }, [filterBy])
     
     function handleChange({ target }) {
-        const { name, value, type } = target
+        const { name, value, type, checked } = target
         
-        let updatedValue = value
+        const val = type === 'checkbox' ? checked : value
+        
+        let newVal = val
         if (name === 'inStock') {
-            if (value === 'true') updatedValue = true
-            else if (value === 'false') updatedValue = false
-            else updatedValue = null
+            if (val === 'all') {
+                newVal = null
+            } else if (val === 'true') {
+                newVal = true
+            } else if (val === 'false') {
+                newVal = false
+            }
         }
         
-        setFilterBy(prevFilter => ({ ...prevFilter, [name]: updatedValue }))
+        setFilterBy(prevFilter => ({ ...prevFilter, [name]: newVal }))
     }
     
     function handleLabelChange(label) {
-        const updatedLabels = [...filterBy.labels]
-        const idx = updatedLabels.findIndex(currLabel => currLabel === label)
-        
-        if (idx < 0) {
-            updatedLabels.push(label)
-        } else {
-            updatedLabels.splice(idx, 1)
-        }
-        
-        setFilterBy(prevFilter => ({ ...prevFilter, labels: updatedLabels }))
+        setFilterBy(prevFilter => {
+            const labels = [...prevFilter.labels]
+            
+            if (labels.includes(label)) {
+                return {
+                    ...prevFilter,
+                    labels: labels.filter(l => l !== label)
+                }
+            } else {
+                return {
+                    ...prevFilter,
+                    labels: [...labels, label]
+                }
+            }
+        })
     }
+    
+    function onSubmitFilter(ev) {
+        ev.preventDefault()
+        onSetFilter(filterBy)
+    }
+    
+    const { txt, inStock } = filterBy
     
     return (
         <section className="toy-filter">
-            <h2>Filter Toys</h2>
-            <div className="filter-form-row">
-                <div className="filter-form-group">
-                    <label htmlFor="name-filter">By Name:</label>
+            <form onSubmit={onSubmitFilter}>
+                <div className="filter-group">
                     <input 
                         type="text"
-                        id="name-filter"
                         name="txt"
-                        value={filterBy.txt}
+                        value={txt}
                         onChange={handleChange}
-                        placeholder="Search toy name..."
+                        placeholder="Search toys..."
+                        className="search-input"
                     />
                 </div>
                 
-                <div className="filter-form-group">
-                    <label htmlFor="stock-filter">In Stock:</label>
-                    <select 
-                        id="stock-filter"
-                        name="inStock"
-                        value={filterBy.inStock === null ? '' : filterBy.inStock.toString()}
-                        onChange={handleChange}
-                    >
-                        <option value="">All</option>
-                        <option value="true">In Stock</option>
-                        <option value="false">Out of Stock</option>
-                    </select>
+                <div className="filter-group">
+                    <label>
+                        <select 
+                            name="inStock" 
+                            value={inStock === null ? 'all' : String(inStock)}
+                            onChange={handleChange}
+                        >
+                            <option value="all">All Toys</option>
+                            <option value="true">In Stock</option>
+                            <option value="false">Out of Stock</option>
+                        </select>
+                    </label>
                 </div>
                 
-                <div className="filter-form-group">
-                    <label htmlFor="sort-by">Sort By:</label>
-                    <select 
-                        id="sort-by"
-                        name="sortBy"
-                        value={filterBy.sortBy}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select</option>
-                        <option value="name">Name</option>
-                        <option value="price">Price</option>
-                        <option value="created">Created</option>
-                    </select>
+                <div className="filter-group">
+                    <div className="labels-filter">
+                        {labels.map(label => (
+                            <label key={label} className="label-checkbox">
+                                <input 
+                                    type="checkbox"
+                                    checked={filterBy.labels.includes(label)}
+                                    onChange={() => handleLabelChange(label)}
+                                />
+                                {label}
+                            </label>
+                        ))}
+                    </div>
                 </div>
-            </div>
-            
-            <div className="labels-filter">
-                <p>Filter by labels:</p>
-                <div className="labels-container">
-                    {labels.map(label => (
-                        <label key={label} className="label-checkbox">
-                            <input 
-                                type="checkbox"
-                                checked={filterBy.labels.includes(label)}
-                                onChange={() => handleLabelChange(label)}
-                            />
-                            {label}
-                        </label>
-                    ))}
-                </div>
-            </div>
+                
+                <button type="submit" className="filter-button">Apply Filter</button>
+            </form>
         </section>
     )
 }

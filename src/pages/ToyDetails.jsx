@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { toyService } from '../services/toy.service.js'
+import { toyService } from '../services/toy.service-remote.js'
 
 export function ToyDetails({ toyId, onBack, onEdit }) {
   const [toy, setToy] = useState(null)
@@ -9,13 +9,14 @@ export function ToyDetails({ toyId, onBack, onEdit }) {
   }, [])
 
   function loadToy() {
-    try {
-      const toy = toyService.getById(toyId)
-      setToy(toy)
-    } catch (err) {
-      console.error('Error loading toy details:', err)
-      onBack()
-    }
+    toyService.getById(toyId)
+      .then(toy => {
+        setToy(toy)
+      })
+      .catch(err => {
+        console.error('Error loading toy details:', err)
+        onBack()
+      })
   }
 
   if (!toy) return <div className="loading">Loading...</div>
@@ -25,12 +26,16 @@ export function ToyDetails({ toyId, onBack, onEdit }) {
       <div className="toy-details-header">
         <button className="btn-back" onClick={onBack}>Back</button>
         <h2>{toy.name}</h2>
-        {/* Chat icon removed as it's now a global floating button */}
       </div>
       
       <div className="toy-details-content">
         <div className="toy-image">
-          <img src={toy.imgUrl} alt={toy.name} />
+          <img src={toy.imgUrl || 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg'} 
+               alt={toy.name} 
+               onError={(e) => {
+                 e.target.src = 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg'
+               }}
+          />
         </div>
         
         <div className="toy-info">

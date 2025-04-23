@@ -96,7 +96,7 @@ function getEmptyToy() {
         price: 0,
         labels: [],
         inStock: true,
-        imgUrl: 'https://via.placeholder.com/150',
+        imgUrl: 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg',
         createdAt: Date.now()
     }
 }
