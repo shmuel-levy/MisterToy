@@ -25,6 +25,7 @@ export function ToyDetails({ toyId, onBack, onEdit }) {
       <div className="toy-details-header">
         <button className="btn-back" onClick={onBack}>Back</button>
         <h2>{toy.name}</h2>
+        {/* Chat icon removed as it's now a global floating button */}
       </div>
       
       <div className="toy-details-content">

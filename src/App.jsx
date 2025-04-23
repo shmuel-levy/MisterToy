@@ -6,10 +6,13 @@ import { ToyIndex } from './pages/ToyIndex';
 import { ToyDetails } from './pages/ToyDetails';
 import { ToyEdit } from './pages/ToyEdit';
 import { About } from './pages/About';
+import { ChatButton } from './cmps/ChatButton';
+import { useOnlineStatus } from './hooks/useOnlineStatus';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedToyId, setSelectedToyId] = useState(null);
+  const isOnline = useOnlineStatus();
 
   function onSetPage(page) {
     setCurrentPage(page);
@@ -40,6 +43,11 @@ function App() {
 
   return (
     <div className="app">
+      {!isOnline && (
+        <div className="offline-alert">
+          You are currently offline. Some features may be unavailable.
+        </div>
+      )}
       <AppHeader onSetPage={onSetPage} currentPage={currentPage} />
       <main className="main-layout">
         {currentPage === 'home' && <Home />}
@@ -66,6 +74,8 @@ function App() {
         {currentPage === 'about' && <About />}
       </main>
       <AppFooter />
+      
+      <ChatButton />
     </div>
   );
 }

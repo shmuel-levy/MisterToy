@@ -1,19 +1,35 @@
 import { useState, useEffect } from 'react';
 import { toyService } from '../services/toy.service.js';
+import { useUnsavedChanges } from '../hooks/useUnsavedChanges.js';
 
 export function ToyEdit({ toyId, onSaveToy, onCancel }) {
   const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy());
+  const [originalToy, setOriginalToy] = useState(null);
   const [labels, setLabels] = useState([]);
+  const [isModified, setIsModified] = useState(false);
+  
+  // Use our custom hook
+  const showUnsavedChangesPrompt = useUnsavedChanges(isModified);
 
   useEffect(() => {
     loadLabels();
     if (toyId) loadToy();
   }, []);
+  
+  // Check for modifications
+  useEffect(() => {
+    if (!originalToy) return;
+    
+    // Compare current state with original
+    const isChanged = JSON.stringify(toyToEdit) !== JSON.stringify(originalToy);
+    setIsModified(isChanged);
+  }, [toyToEdit, originalToy]);
 
   function loadToy() {
     try {
       const toy = toyService.getById(toyId);
       setToyToEdit(toy);
+      setOriginalToy(JSON.parse(JSON.stringify(toy))); // Deep copy
     } catch (err) {
       console.error('Error loading toy for edit:', err);
       onCancel();
@@ -52,11 +68,20 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
     }));
   }
 
+  function handleCancel() {
+    if (isModified) {
+      const confirmLeave = window.confirm('You have unsaved changes. Are you sure you want to leave?');
+      if (!confirmLeave) return;
+    }
+    onCancel();
+  }
+
   function onSubmitForm(ev) {
     ev.preventDefault();
     
     try {
       const savedToy = toyService.save(toyToEdit);
+      setIsModified(false);
       onSaveToy(savedToy);
     } catch (err) {
       console.error('Error saving toy:', err);
@@ -66,6 +91,12 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
   return (
     <section className="toy-edit">
       <h2>{toyToEdit._id ? 'Edit Toy' : 'Add Toy'}</h2>
+      
+      {showUnsavedChangesPrompt && (
+        <div className="unsaved-changes-alert">
+          You have unsaved changes!
+        </div>
+      )}
       
       <form onSubmit={onSubmitForm}>
         <div className="form-group">
@@ -141,7 +172,7 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
         </div>
         
         <div className="form-actions">
-          <button type="button" onClick={onCancel}>Cancel</button>
+          <button type="button" onClick={handleCancel}>Cancel</button>
           <button type="submit">Save</button>
         </div>
       </form>

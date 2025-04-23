@@ -1,0 +1,19 @@
+.offline-alert {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  /* Unsaved Changes Alert */
+  .unsaved-changes-alert {
+    background-color: #f39c12;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
