@@ -40,7 +40,8 @@ function getDefaultFilter() {
         txt: '',
         inStock: null,
         labels: [],
-        sortBy: ''
+        sortBy: '',
+        pageIdx: 0
     }
 }
 // function getDefaultFilter() {

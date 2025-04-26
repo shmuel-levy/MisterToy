@@ -1,44 +1,63 @@
-import { useState } from 'react'
-import { AppHeader } from './cmps/AppHeader'
-import { AppFooter } from './cmps/AppFooter'
-import { Home } from './pages/Home'
-import { ToyIndex } from './pages/ToyIndex'
-import { ToyDetails } from './pages/ToyDetails'
-import { ToyEdit } from './pages/ToyEdit'
-import { About } from './pages/About'
-import { ChatButton } from './cmps/ChatButton'
-import { useOnlineStatus } from './hooks/useOnlineStatus'
+import { useState, useEffect } from 'react';
+import { AppHeader } from './cmps/AppHeader';
+import { AppFooter } from './cmps/AppFooter';
+import { Home } from './pages/Home';
+import { ToyIndex } from './pages/ToyIndex';
+import { ToyDetails } from './pages/ToyDetails';
+import { ToyEdit } from './pages/ToyEdit';
+import { About } from './pages/About';
+import { ChatButton } from './cmps/ChatButton';
+import { UserMsg } from './cmps/UserMsg';
+import { useOnlineStatus } from './hooks/useOnlineStatus';
+import { eventBus } from './services/event-bus.service';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home')
-  const [selectedToyId, setSelectedToyId] = useState(null)
-  const isOnline = useOnlineStatus()
+  const [currentPage, setCurrentPage] = useState('home');
+  const [selectedToyId, setSelectedToyId] = useState(null);
+  const [userMsg, setUserMsg] = useState(null);
+  const isOnline = useOnlineStatus();
+
+  useEffect(() => {
+    // Listen for user message events
+    const unsubscribe = eventBus.on('show-user-msg', (msg) => {
+      setUserMsg(msg);
+    });
+    
+    // Cleanup
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   function onSetPage(page) {
-    setCurrentPage(page)
+    setCurrentPage(page);
   }
 
   function onSelectToy(toyId) {
-    setSelectedToyId(toyId)
-    setCurrentPage('toyDetails')
+    setSelectedToyId(toyId);
+    setCurrentPage('toyDetails');
   }
 
   function onAddToy() {
-    setSelectedToyId(null)
-    setCurrentPage('toyEdit')
+    setSelectedToyId(null);
+    setCurrentPage('toyEdit');
   }
 
   function onEditToy(toyId) {
-    setSelectedToyId(toyId)
-    setCurrentPage('toyEdit')
+    setSelectedToyId(toyId);
+    setCurrentPage('toyEdit');
   }
 
   function onBackToToys() {
-    setCurrentPage('toys')
+    setCurrentPage('toys');
   }
 
   function onSaveToy(savedToy) {
-    setCurrentPage('toys')
+    setCurrentPage('toys');
+  }
+
+  function closeUserMsg() {
+    setUserMsg(null);
   }
 
   return (
@@ -48,6 +67,11 @@ function App() {
           You are currently offline. Some features may be unavailable.
         </div>
       )}
+      
+      {userMsg && (
+        <UserMsg msg={userMsg} onClose={closeUserMsg} />
+      )}
+      
       <AppHeader onSetPage={onSetPage} currentPage={currentPage} />
       <main className="main-layout">
         {currentPage === 'home' && <Home />}
@@ -77,7 +101,7 @@ function App() {
       
       <ChatButton />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

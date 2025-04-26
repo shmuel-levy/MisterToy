@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
-import { toyService } from '../services/toy.service-remote.js' 
+import { toyService } from '../services/toy.service-remote.js'
 import { useUnsavedChanges } from '../hooks/useUnsavedChanges.js'
+import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
 export function ToyEdit({ toyId, onSaveToy, onCancel }) {
   const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy())
   const [originalToy, setOriginalToy] = useState(null)
   const [labels, setLabels] = useState([])
   const [isModified, setIsModified] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   
+  // Use our custom hook
   const showUnsavedChangesPrompt = useUnsavedChanges(isModified)
 
   useEffect(() => {
@@ -15,14 +18,18 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
     if (toyId) loadToy()
   }, [])
   
+  // Check for modifications
   useEffect(() => {
     if (!originalToy) return
     
+    // Compare current state with original
     const isChanged = JSON.stringify(toyToEdit) !== JSON.stringify(originalToy)
     setIsModified(isChanged)
   }, [toyToEdit, originalToy])
 
   function loadToy() {
+    setIsLoading(true)
+    
     toyService.getById(toyId)
       .then(toy => {
         setToyToEdit(toy)
@@ -30,7 +37,11 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
       })
       .catch(err => {
         console.error('Error loading toy for edit:', err)
+        showErrorMsg('Failed to load toy')
         onCancel()
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -75,14 +86,21 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
 
   function onSubmitForm(ev) {
     ev.preventDefault()
+    setIsLoading(true)
     
     toyService.save(toyToEdit)
       .then(savedToy => {
         setIsModified(false)
+        const isNew = !toyToEdit._id
+        showSuccessMsg(isNew ? 'Toy added successfully!' : 'Toy updated successfully!')
         onSaveToy(savedToy)
       })
       .catch(err => {
         console.error('Error saving toy:', err)
+        showErrorMsg('Failed to save toy')
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -95,6 +113,8 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
           You have unsaved changes!
         </div>
       )}
+      
+      {isLoading && <div className="loading">Loading...</div>}
       
       <form onSubmit={onSubmitForm}>
         <div className="form-group">
@@ -177,8 +197,10 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
         </div>
         
         <div className="form-actions">
-          <button type="button" onClick={handleCancel}>Cancel</button>
-          <button type="submit">Save</button>
+          <button type="button" onClick={handleCancel} disabled={isLoading}>Cancel</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Saving...' : 'Save'}
+          </button>
         </div>
       </form>
     </section>
