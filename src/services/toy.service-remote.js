@@ -2,6 +2,7 @@ import { httpService } from './http.service'
 
 const BASE_URL = 'toy/'
 const labels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzzle', 'Outdoor', 'Battery Powered']
+
 export const toyService = {
     query,
     getById,
@@ -12,13 +13,26 @@ export const toyService = {
     getLabels
 }
 
-function query(filterBy = {}) {
-    return httpService.get(BASE_URL, filterBy)
-    // return axios.get(BASE_URL, {params: { filterBy, sortBy, pageIdx }})
+function query(filterBy = getDefaultFilter()) {
+    // Converting the filterBy object into a format the backend expects
+    // The backend expects filterBy and sortBy as separate parameters
+    const { sortBy, pageIdx, ...filterParams } = filterBy;
+    
+    // Convert objects to JSON strings for HTTP parameters
+    const params = {
+        filterBy: JSON.stringify(filterParams),
+        pageIdx
+    };
+    
+    // Add sortBy if it exists
+    if (sortBy && sortBy.type) {
+        params.sortBy = JSON.stringify(sortBy);
+    }
+    
+    return httpService.get(BASE_URL, params);
 }
 
 function getById(toyId) {
-    
     return httpService.get(BASE_URL + toyId)
 }
 
@@ -40,20 +54,10 @@ function getDefaultFilter() {
         txt: '',
         inStock: null,
         labels: [],
-        sortBy: '',
+        sortBy: { type: '', desc: false },
         pageIdx: 0
     }
 }
-// function getDefaultFilter() {
-//     return {
-//         txt: '',
-//         inStock: null,
-//         labels: [],
-//         pageIdx: 0,
-//     }
-// }
-
-
 
 function getEmptyToy() {
     return {
@@ -64,8 +68,6 @@ function getEmptyToy() {
     }
 }
 
-
-
 function _getRandomLabels() {
     const labelsCopy = [...labels]
     const randomLabels = []
@@ -75,14 +77,3 @@ function _getRandomLabels() {
     }
     return randomLabels
 }
-
-// function getEmptyToy() {
-//     return {
-//         name: '',
-//         price: 0,
-//         labels: [],
-//         inStock: true,
-//         imgUrl: 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg',
-//         createdAt: Date.now()
-//     }
-// }

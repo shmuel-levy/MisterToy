@@ -89,3 +89,22 @@
   .chat-icon .icon {
     font-size: 1.2rem;
   }
+
+  .btn-remove {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-remove:hover {
+    background-color: #c0392b;
+  }
+  
+  .btn-remove:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+  }

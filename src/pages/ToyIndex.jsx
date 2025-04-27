@@ -1,68 +1,79 @@
-import { useState, useEffect } from 'react'
-import { ToyList } from '../cmps/ToyList.jsx'
-import { ToyFilter } from '../cmps/ToyFilter.jsx'
-import { toyService } from '../services/toy.service-remote.js'
-import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
+import { useState, useEffect } from 'react';
+import { ToyList } from '../cmps/ToyList.jsx';
+import { ToyFilter } from '../cmps/ToyFilter.jsx';
+import { toyService } from '../services/toy.service-remote.js';
+import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js';
 
 export function ToyIndex({ onSelectToy, onAddToy }) {
-    const [toys, setToys] = useState([])
-    const [filterBy, setFilterBy] = useState(toyService.getDefaultFilter())
-    const [isLoading, setIsLoading] = useState(false)
+    const [toys, setToys] = useState([]);
+    const [filterBy, setFilterBy] = useState(toyService.getDefaultFilter());
+    const [isLoading, setIsLoading] = useState(false);
     const [pagination, setPagination] = useState({
         pageIdx: 0,
         totalPages: 1
-    })
+    });
     
     useEffect(() => {
-        loadToys()
-    }, [filterBy, pagination.pageIdx])
+        loadToys();
+    }, [filterBy, pagination.pageIdx]);
     
     function loadToys() {
-        setIsLoading(true)
+        setIsLoading(true);
         
-        const filterWithPage = { ...filterBy, pageIdx: pagination.pageIdx }
+        // Combine filterBy with the current page index
+        const queryParams = {
+            ...filterBy,
+            pageIdx: pagination.pageIdx
+        };
         
-        toyService.query(filterWithPage)
+        toyService.query(queryParams)
             .then(response => {
-            
-                setToys(response.toys)
-                setPagination(prev => ({ ...prev, totalPages: response.totalPages }))
+                // Assuming the backend returns { toys: [...], totalPages: N }
+                setToys(response.toys || []);
+                setPagination(prev => ({ 
+                    ...prev, 
+                    totalPages: response.totalPages || 1 
+                }));
             })
             .catch(err => {
-                console.error('Error loading toys:', err)
-                showErrorMsg('Failed to load toys')
+                console.error('Error loading toys:', err);
+                showErrorMsg('Failed to load toys');
+                setToys([]);
             })
             .finally(() => {
-                setIsLoading(false)
-            })
+                setIsLoading(false);
+            });
     }
     
-    function onSetFilter(filterBy) {
-        setFilterBy(filterBy)
-        setPagination(prev => ({ ...prev, pageIdx: 0 }))
+    function onSetFilter(newFilterBy) {
+        // Reset to first page when filter changes
+        setPagination(prev => ({ ...prev, pageIdx: 0 }));
+        setFilterBy(newFilterBy);
     }
     
     function onRemoveToy(toyId) {
         toyService.remove(toyId)
             .then(() => {
-                setToys(prevToys => prevToys.filter(toy => toy._id !== toyId))
-                showSuccessMsg('Toy removed successfully!')
-               
+                setToys(prevToys => prevToys.filter(toy => toy._id !== toyId));
+                showSuccessMsg('Toy removed successfully!');
+                
+                // If last toy on page was removed and there are previous pages, go back a page
                 if (toys.length === 1 && pagination.pageIdx > 0) {
-                    setPagination(prev => ({ ...prev, pageIdx: prev.pageIdx - 1 }))
+                    setPagination(prev => ({ ...prev, pageIdx: prev.pageIdx - 1 }));
                 } else {
-                    loadToys()
+                    // Reload the current page to get new toys if needed
+                    loadToys();
                 }
             })
             .catch(err => {
-                console.error('Error removing toy:', err)
-                showErrorMsg('Failed to remove toy')
-            })
+                console.error('Error removing toy:', err);
+                showErrorMsg('Failed to remove toy');
+            });
     }
     
     function handlePageChange(newPageIdx) {
         if (newPageIdx >= 0 && newPageIdx < pagination.totalPages) {
-            setPagination(prev => ({ ...prev, pageIdx: newPageIdx }))
+            setPagination(prev => ({ ...prev, pageIdx: newPageIdx }));
         }
     }
     
@@ -77,7 +88,11 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
             
             {isLoading && <div className="loading">Loading...</div>}
             
-            {toys.length > 0 ? (
+            {!isLoading && toys.length === 0 ? (
+                <div className="no-toys">
+                    No toys found. Try changing your filters.
+                </div>
+            ) : (
                 <>
                     <ToyList 
                         toys={toys} 
@@ -85,33 +100,31 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
                         onSelectToy={onSelectToy} 
                     />
                     
-                    <div className="pagination">
-                        <button 
-                            className="page-btn prev"
-                            onClick={() => handlePageChange(pagination.pageIdx - 1)}
-                            disabled={pagination.pageIdx === 0 || isLoading}
-                        >
-                            &laquo Previous
-                        </button>
-                        
-                        <span className="page-info">
-                            Page {pagination.pageIdx + 1} of {pagination.totalPages}
-                        </span>
-                        
-                        <button 
-                            className="page-btn next"
-                            onClick={() => handlePageChange(pagination.pageIdx + 1)}
-                            disabled={pagination.pageIdx >= pagination.totalPages - 1 || isLoading}
-                        >
-                            Next &raquo
-                        </button>
-                    </div>
+                    {toys.length > 0 && (
+                        <div className="pagination">
+                            <button 
+                                className="page-btn prev"
+                                onClick={() => handlePageChange(pagination.pageIdx - 1)}
+                                disabled={pagination.pageIdx === 0 || isLoading}
+                            >
+                                &laquo; Previous
+                            </button>
+                            
+                            <span className="page-info">
+                                Page {pagination.pageIdx + 1} of {pagination.totalPages}
+                            </span>
+                            
+                            <button 
+                                className="page-btn next"
+                                onClick={() => handlePageChange(pagination.pageIdx + 1)}
+                                disabled={pagination.pageIdx >= pagination.totalPages - 1 || isLoading}
+                            >
+                                Next &raquo;
+                            </button>
+                        </div>
+                    )}
                 </>
-            ) : (
-                <div className="no-toys">
-                    {isLoading ? '' : 'No toys found. Try changing your filters.'}
-                </div>
             )}
         </section>
-    )
+    );
 }
