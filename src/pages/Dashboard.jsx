@@ -32,21 +32,18 @@ export function Dashboard() {
     function loadStats() {
         setIsLoading(true)
         
-        // Load label stats
         toyService.getLabelStats()
             .then(setLabelStats)
             .catch(err => {
                 console.error('Error loading label stats:', err)
             })
         
-        // Load price stats
         toyService.getPriceStats()
             .then(setPriceStats)
             .catch(err => {
                 console.error('Error loading price stats:', err)
             })
         
-        // Load inventory stats
         toyService.getInventoryStats()
             .then(setInventoryStats)
             .catch(err => {
@@ -57,7 +54,6 @@ export function Dashboard() {
             })
     }
 
-    // Prepare pie chart data
     const labelData = {
         labels: labelStats.map(s => s.title),
         datasets: [

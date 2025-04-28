@@ -17,17 +17,13 @@ export const toyService = {
 }
 
 function query(filterBy = getDefaultFilter()) {
-    // Converting the filterBy object into a format the backend expects
-    // The backend expects filterBy and sortBy as separate parameters
     const { sortBy, pageIdx, ...filterParams } = filterBy;
     
-    // Convert objects to JSON strings for HTTP parameters
     const params = {
         filterBy: JSON.stringify(filterParams),
         pageIdx
     };
     
-    // Add sortBy if it exists
     if (sortBy && sortBy.type) {
         params.sortBy = JSON.stringify(sortBy);
     }
@@ -71,7 +67,6 @@ function getEmptyToy() {
     }
 }
 
-// Stats Functions for Dashboard
 function getLabelStats() {
     return query()
         .then(response => {
@@ -120,7 +115,6 @@ function getInventoryStats() {
         })
 }
 
-// Helper Functions
 function _getRandomLabels() {
     const labelsCopy = [...labels]
     const randomLabels = []
@@ -132,11 +126,9 @@ function _getRandomLabels() {
 }
 
 function _getToyCountByLabelMap(toys) {
-    // First initialize with all labels at 0
     const toyCountByLabelMap = {}
     labels.forEach(label => toyCountByLabelMap[label] = 0)
     
-    // Count toys by label
     toys.forEach(toy => {
         if (toy.labels && Array.isArray(toy.labels)) {
             toy.labels.forEach(label => {
@@ -151,7 +143,6 @@ function _getToyCountByLabelMap(toys) {
 }
 
 function _getAvgPriceByLabelMap(toys) {
-    // First initialize price sums and counts for all labels
     const labelPriceSums = {}
     const labelCounts = {}
     labels.forEach(label => {
@@ -159,7 +150,6 @@ function _getAvgPriceByLabelMap(toys) {
         labelCounts[label] = 0
     })
     
-    // Add up prices and counts by label
     toys.forEach(toy => {
         if (toy.labels && Array.isArray(toy.labels) && toy.price) {
             const price = parseFloat(toy.price)
@@ -174,7 +164,6 @@ function _getAvgPriceByLabelMap(toys) {
         }
     })
     
-    // Calculate averages
     const avgPriceByLabelMap = {}
     labels.forEach(label => {
         avgPriceByLabelMap[label] = labelCounts[label] > 0 
@@ -186,7 +175,6 @@ function _getAvgPriceByLabelMap(toys) {
 }
 
 function _getInStockPercentageByLabelMap(toys) {
-    // First initialize in-stock and total counts for all labels
     const inStockCounts = {}
     const totalCounts = {}
     labels.forEach(label => {
@@ -194,7 +182,6 @@ function _getInStockPercentageByLabelMap(toys) {
         totalCounts[label] = 0
     })
     
-    // Count in-stock and total toys by label
     toys.forEach(toy => {
         if (toy.labels && Array.isArray(toy.labels)) {
             toy.labels.forEach(label => {
@@ -208,7 +195,6 @@ function _getInStockPercentageByLabelMap(toys) {
         }
     })
     
-    // Calculate percentages
     const inStockPercentageByLabelMap = {}
     labels.forEach(label => {
         inStockPercentageByLabelMap[label] = totalCounts[label] > 0 

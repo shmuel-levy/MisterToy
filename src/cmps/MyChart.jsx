@@ -1,8 +1,8 @@
-import React from 'react';
-import { Chart as ChartJS, ArcElement, RadialLinearScale, Tooltip, Legend } from 'chart.js';
-import { Pie, PolarArea } from 'react-chartjs-2';
+import React from 'react'
+import { Chart as ChartJS, ArcElement, RadialLinearScale, Tooltip, Legend } from 'chart.js'
+import { Pie, PolarArea } from 'react-chartjs-2'
 
-ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
+ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend)
 
 
 export function MyChart() {

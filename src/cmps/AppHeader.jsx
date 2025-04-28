@@ -8,8 +8,8 @@ export function AppHeader({ onSetPage, currentPage }) {
           <a 
             href="#" 
             onClick={(e) => {
-              e.preventDefault();
-              onSetPage('home');
+              e.preventDefault()
+              onSetPage('home')
             }}
             className={currentPage === 'home' ? 'active' : ''}
           >
@@ -18,8 +18,8 @@ export function AppHeader({ onSetPage, currentPage }) {
           <a 
             href="#" 
             onClick={(e) => {
-              e.preventDefault();
-              onSetPage('toys');
+              e.preventDefault()
+              onSetPage('toys')
             }}
             className={currentPage === 'toys' ? 'active' : ''}
           >
@@ -28,8 +28,8 @@ export function AppHeader({ onSetPage, currentPage }) {
           <a 
             href="#" 
             onClick={(e) => {
-              e.preventDefault();
-              onSetPage('dashboard');
+              e.preventDefault()
+              onSetPage('dashboard')
             }}
             className={currentPage === 'dashboard' ? 'active' : ''}
           >
@@ -38,8 +38,8 @@ export function AppHeader({ onSetPage, currentPage }) {
           <a 
             href="#" 
             onClick={(e) => {
-              e.preventDefault();
-              onSetPage('about');
+              e.preventDefault()
+              onSetPage('about')
             }}
             className={currentPage === 'about' ? 'active' : ''}
           >
@@ -48,5 +48,5 @@ export function AppHeader({ onSetPage, currentPage }) {
         </nav>
       </div>
     </header>
-  );
+  )
 }
