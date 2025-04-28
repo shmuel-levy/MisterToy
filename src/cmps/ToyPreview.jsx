@@ -2,7 +2,9 @@ export function ToyPreview({ toy }) {
     return (
         <article className="toy-preview">
             <div className="toy-img-container">
-                <img src={toy.imgUrl} alt={toy.name} />
+            <img src={`/images/${toy.imgUrl}`} alt={toy.name} />
+
+
             </div>
             <div className="toy-info">
                 <h3>{toy.name}</h3>

@@ -1,10 +1,14 @@
+import img from "/images/toys-store-banner.jpeg";
+
+
+
 export function Home() {
     return (
       <section className="home">
         <h1>Welcome to Mister Toy</h1>
         <p>Your one-stop shop for amazing toys!</p>
         <div className="home-banner">
-          <img src="https://via.placeholder.com/800x400?text=Toy+Store+Banner" alt="Toy Store Banner" />
+          <img src={img} />
         </div>
         <div className="home-info">
           <h2>Why Choose Mister Toy?</h2>

@@ -20,7 +20,7 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
     function loadToys() {
         setIsLoading(true);
         
-        // Combine filterBy with the current page index
+
         const queryParams = {
             ...filterBy,
             pageIdx: pagination.pageIdx
@@ -28,7 +28,7 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
         
         toyService.query(queryParams)
             .then(response => {
-                // Assuming the backend returns { toys: [...], totalPages: N }
+         
                 setToys(response.toys || []);
                 setPagination(prev => ({ 
                     ...prev, 
@@ -46,7 +46,7 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
     }
     
     function onSetFilter(newFilterBy) {
-        // Reset to first page when filter changes
+
         setPagination(prev => ({ ...prev, pageIdx: 0 }));
         setFilterBy(newFilterBy);
     }
@@ -56,12 +56,10 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
             .then(() => {
                 setToys(prevToys => prevToys.filter(toy => toy._id !== toyId));
                 showSuccessMsg('Toy removed successfully!');
-                
-                // If last toy on page was removed and there are previous pages, go back a page
+        
                 if (toys.length === 1 && pagination.pageIdx > 0) {
                     setPagination(prev => ({ ...prev, pageIdx: prev.pageIdx - 1 }));
                 } else {
-                    // Reload the current page to get new toys if needed
                     loadToys();
                 }
             })
