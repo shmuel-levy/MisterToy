@@ -17,7 +17,7 @@
 @import 'components/toy-index.css';
 @import 'components/toy-home.css';
 @import 'components/toy-filter.css';
-@import 'components/toy-about.css';
+
 @import 'components/toy-chat.css';
 @import 'components/toy-popup.css';
 @import 'components/toy-alerts.css';
@@ -25,3 +25,5 @@
 
 @import 'components/toy-details.css'; 
 @import 'components/toy-edit.css';
+@import 'components/toy-dashboard.css';
+@import 'components/toy-mui-material.css';
