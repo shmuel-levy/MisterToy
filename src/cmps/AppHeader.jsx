@@ -2,33 +2,51 @@ export function AppHeader({ onSetPage, currentPage }) {
   return (
     <header className="app-header">
       <div className="header-content main-layout">
-        <div className="logo">
-          <h1>MisterToy</h1>
-        </div>
+        <h1 className="logo">Mister Toy</h1>
+        
         <nav className="main-nav">
           <a 
             href="#" 
-            className={currentPage === 'home' ? 'active' : ''} 
-            onClick={() => onSetPage('home')}
+            onClick={(e) => {
+              e.preventDefault();
+              onSetPage('home');
+            }}
+            className={currentPage === 'home' ? 'active' : ''}
           >
             Home
           </a>
           <a 
             href="#" 
-            className={currentPage === 'toys' ? 'active' : ''} 
-            onClick={() => onSetPage('toys')}
+            onClick={(e) => {
+              e.preventDefault();
+              onSetPage('toys');
+            }}
+            className={currentPage === 'toys' ? 'active' : ''}
           >
             Toys
           </a>
           <a 
             href="#" 
-            className={currentPage === 'about' ? 'active' : ''} 
-            onClick={() => onSetPage('about')}
+            onClick={(e) => {
+              e.preventDefault();
+              onSetPage('dashboard');
+            }}
+            className={currentPage === 'dashboard' ? 'active' : ''}
+          >
+            Dashboard
+          </a>
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              onSetPage('about');
+            }}
+            className={currentPage === 'about' ? 'active' : ''}
           >
             About
           </a>
         </nav>
       </div>
     </header>
-  )
+  );
 }

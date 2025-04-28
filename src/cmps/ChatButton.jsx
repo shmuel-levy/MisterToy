@@ -1,4 +1,3 @@
-// src/cmps/ChatButton.jsx
 import { useState } from 'react'
 import { Chat } from './Chat'
 import { PopUp } from './PopUp'
