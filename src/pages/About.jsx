@@ -1,28 +1,32 @@
+import React from "react"
+import { ToyShopMap } from "../cmps/ToyShopMap"
 export function About() {
-    return (
-      <section className="about">
+  return (
+    <section className="about-page">
+      <div className="about-container">
         <h1>About Mister Toy</h1>
+        
         <div className="about-content">
-          <div className="about-image">
-            <img src="https://via.placeholder.com/400x300?text=Our+Store" alt="Our Store" />
-          </div>
-          <div className="about-text">
-            <h2>Our Story</h2>
+          <div className="about-info">
+            <h2>Welcome to Mister Toy!</h2>
             <p>
-              Mister Toy was founded in 2010 with a simple mission: to bring joy to children and adults alike through high-quality toys.
+              Mister Toy has been bringing joy to children and families since 1995. 
+              We pride ourselves on offering a wide selection of high-quality toys 
+              that inspire creativity, learning, and fun.
             </p>
-            <p>
-              What started as a small store has grown into a beloved toy shop with a wide selection of toys for all ages.
-            </p>
-            <h2>Our Values</h2>
-            <ul>
-              <li>Quality over quantity</li>
-              <li>Customer satisfaction</li>
-              <li>Creating memorable experiences</li>
-              <li>Supporting local toy makers</li>
-            </ul>
           </div>
         </div>
-      </section>
-    )
-  }
+        
+        <div className="map-section">
+          <h2>Visit Us</h2>
+          <p>
+            We have three convenient locations across Israel. Select a branch on the 
+            map below to see more information about each store.
+          </p>
+          
+          <ToyShopMap />
+        </div>
+      </div>
+    </section>
+  )
+}
