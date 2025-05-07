@@ -1,110 +1,130 @@
+@import '../setup/variables';
+@import '../setup/mixins';
+
+
+
 .toy-details {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    padding: 25px;
-    margin-top: 20px;
-  }
-  
-  .toy-details-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .toy-details-header .btn-back {
-    background-color: #95a5a6;
-    color: white;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 25px;
+  margin-top: 20px;
+}
+
+.toy-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.toy-details-header {
+  .btn-back {
+    background-color: $color-gray;
+    color: $color-white;
     border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    margin-right: 20px;
+    border-radius: $border-radius-sm;
+    padding: $spacing-xs $spacing-sm;
+    margin-right: $spacing-md;
     cursor: pointer;
-    transition: background-color 0.3s;
+    @include transition;
+    
+    &:hover {
+      background-color: $color-gray-dark;
+    }
   }
+}
+
+.toy-details-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: $spacing-lg;
   
-  .toy-details-header .btn-back:hover {
-    background-color: #7f8c8d;
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-md;
   }
+}
+
+.toy-image {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  box-shadow: $box-shadow-md;
   
-  .toy-details-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    margin-bottom: 30px;
-  }
-  
-  .toy-image {
-    flex: 1;
-    min-width: 300px;
-    max-width: 500px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .toy-image img {
+  img {
     width: 100%;
     height: auto;
     display: block;
+    @include transition;
+    
+    &:hover {
+      transform: scale(1.02);
+    }
   }
-  
-  .toy-info {
-    flex: 1;
-    min-width: 300px;
-  }
-  
-  .btn-edit {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-edit:hover {
-    background-color: #2980b9;
-  }
+}
 
-  .chat-icon {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 15px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
 
-  .chat-icon:hover {
-    background-color: #2980b9;
-  }
-  
-  .chat-icon .icon {
-    font-size: 1.2rem;
-  }
+.toy-info {
+  flex: 1;
+  min-width: 300px;
+}
 
-  .btn-remove {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 15px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-remove:hover {
-    background-color: #c0392b;
-  }
-  
-  .btn-remove:disabled {
-    background-color: #95a5a6;
-    cursor: not-allowed;
-  }
+.btn-edit {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.btn-edit:hover {
+  background-color: #2980b9;
+}
+
+.chat-icon {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.chat-icon:hover {
+  background-color: #2980b9;
+}
+
+.chat-icon .icon {
+  font-size: 1.2rem;
+}
+
+.btn-remove {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-remove:hover {
+  background-color: #c0392b;
+}
+
+.btn-remove:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}

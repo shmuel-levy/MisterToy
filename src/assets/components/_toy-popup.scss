@@ -1,65 +1,90 @@
+@import '../setup/variables';
+@import '../setup/mixins';
+
+
 .popup-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($color-black, 0.5);
+  @include flex-center;
+  z-index: 1000;
   
-  .popup-container {
-    background-color: white;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-  }
+  animation: fade-in 0.3s ease-out;
   
-  .popup-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-    background-color: #f8f9fa;
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
+}
+
+.popup-container {
+  background-color: $color-white;
+  border-radius: $border-radius-md;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  @include flex-column;
+  box-shadow: 0 5px 20px rgba($color-black, 0.2);
+  overflow: hidden;
   
-  .popup-header h3 {
+  animation: slide-up 0.3s ease-out;
+  
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.popup-header {
+  padding: $spacing-sm $spacing-md;
+  border-bottom: 1px solid #eee;
+  background-color: #f8f9fa;
+  
+  h3 {
     margin: 0;
     font-size: 1.2rem;
-    color: #2c3e50;
+    color: $color-primary;
   }
+}
+
+.popup-main {
+  padding: $spacing-md;
+  overflow-y: auto;
+  flex-grow: 1;
+  max-height: 500px;
+}
+
+.popup-footer {
+  padding: $spacing-sm $spacing-md;
+  border-top: 1px solid #eee;
+  @include flex;
+  justify-content: flex-end;
+  background-color: #f8f9fa;
   
-  .popup-main {
-    padding: 20px;
-    overflow-y: auto;
-    flex-grow: 1;
-    max-height: 500px;
-  }
-  
-  .popup-footer {
-    padding: 15px 20px;
-    border-top: 1px solid #eee;
-    display: flex;
-    justify-content: flex-end;
-    background-color: #f8f9fa;
-  }
-  
-  .popup-footer button {
-    padding: 8px 16px;
-    border-radius: 4px;
+  button {
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
     border: none;
     cursor: pointer;
-    background-color: #3498db;
-    color: white;
-    transition: background-color 0.3s;
+    background-color: $color-secondary;
+    color: $color-white;
+    @include transition;
+    
+    &:hover {
+      background-color: $color-secondary-dark;
+    }
   }
-  
-  .popup-footer button:hover {
-    background-color: #2980b9;
-  }
+}

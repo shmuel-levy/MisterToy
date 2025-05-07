@@ -1,0 +1,81 @@
+@mixin flex {
+    display: flex;
+  }
+  
+  @mixin flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  @mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @mixin flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  @mixin flex-around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  @mixin flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  @mixin mobile {
+    @media (max-width: 768px) {
+      @content;
+    }
+  }
+  
+  @mixin tablet-up {
+    @media (min-width: 769px) {
+      @content;
+    }
+  }
+  
+  @mixin transition($property: all, $duration: 0.3s, $timing: ease) {
+    transition: $property $duration $timing;
+  }
+  
+  @mixin button-primary {
+    background-color: $color-secondary;
+    color: $color-white;
+    border: none;
+    border-radius: $border-radius-sm;
+    padding: $spacing-xs $spacing-md;
+    cursor: pointer;
+    @include transition;
+    
+    &:hover {
+      background-color: $color-secondary-dark;
+    }
+  }
+  
+  @mixin card {
+    background-color: $color-white;
+    border-radius: $border-radius-md;
+    box-shadow: $box-shadow-md;
+    overflow: hidden;
+  }
+  
+  @mixin text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  @mixin container {
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding-left: $container-padding;
+    padding-right: $container-padding;
+  }

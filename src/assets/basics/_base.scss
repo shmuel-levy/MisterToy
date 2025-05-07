@@ -1,33 +1,42 @@
+@import '../setup/variables';
+
 * {
-    box-sizing: border-box;
-  }
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #2c3e50;
+}
+
+body {
+  margin: 0;
+  background-color: #ecf0f1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  color: $color-secondary;
+  text-decoration: none;
   
-  html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #2c3e50;
-  }
-  
-  body {
-    margin: 0;
-    background-color: #ecf0f1;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    margin: 0 0 1rem;
-    font-weight: 600;
-    line-height: 1.2;
-  }
-  
-  img {
-    max-width: 100%;
-  }
-  
-  a {
-    color: #3498db;
-    text-decoration: none;
-  }
-  
-  a:hover {
+  &:hover {
     text-decoration: underline;
   }
+}
+
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}

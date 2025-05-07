@@ -1,15 +1,19 @@
+@import '../setup/variables';
+@import '../setup/mixins';
+
+
 .user-msg {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 2000;
-    padding: 15px;
-    border-radius: 8px;
-    min-width: 280px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    animation: slide-in 0.3s ease-out;
-  }
+  position: fixed;
+  top: $spacing-md;
+  right: $spacing-md;
+  z-index: 2000;
+  padding: $spacing-sm;
+  border-radius: $border-radius-md;
+  min-width: 280px;
+  box-shadow: $box-shadow-lg;
+  overflow: hidden;
+  
+  animation: slide-in 0.3s ease-out;
   
   @keyframes slide-in {
     from {
@@ -22,50 +26,49 @@
     }
   }
   
-  .user-msg.success {
-    background-color: #2ecc71;
-    color: white;
+  &.success {
+    background-color: $color-success;
+    color: $color-white;
   }
   
-  .user-msg.error {
-    background-color: #e74c3c;
-    color: white;
+  &.error {
+    background-color: $color-danger;
+    color: $color-white;
   }
+}
+
+.msg-content {
+  @include flex-between;
+}
+
+.msg-text {
+  flex-grow: 1;
+  margin-right: $spacing-sm;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: $color-white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.8;
+  @include transition;
   
-  .msg-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .msg-text {
-    flex-grow: 1;
-    margin-right: 15px;
-  }
-  
-  .close-button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    opacity: 0.8;
-    transition: opacity 0.3s;
-  }
-  
-  .close-button:hover {
+  &:hover {
     opacity: 1;
   }
+}
+
+.msg-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: rgba($color-white, 0.5);
+  width: 100%;
   
-  .msg-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 4px;
-    background-color: rgba(255, 255, 255, 0.5);
-    width: 100%;
-    animation: progress-shrink linear forwards;
-  }
+  animation: progress-shrink linear forwards;
   
   @keyframes progress-shrink {
     from {
@@ -75,3 +78,4 @@
       width: 0%;
     }
   }
+}

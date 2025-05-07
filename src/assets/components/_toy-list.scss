@@ -1,13 +1,48 @@
+@import '../setup/variables';
+@import '../setup/mixins';
+
 .toy-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-  margin-bottom: 30px;
-}
+  gap: $spacing-lg;
+  margin-bottom: $spacing-lg;
   
-  .empty-list {
-    text-align: center;
-    padding: 50px 0;
-    font-size: 1.2rem;
-    color: #2c3e50;
+  @include mobile {
+    gap: $spacing-md;
   }
+}
+
+.empty-list {
+  text-align: center;
+  padding: $spacing-xl 0;
+  font-size: 1.2rem;
+  color: $color-primary;
+}
+
+.pagination {
+  @include flex-center;
+  margin: $spacing-lg 0;
+  user-select: none;
+  
+  .page-btn {
+    @include button-primary;
+    margin: 0 $spacing-sm;
+    
+    &:disabled {
+      background-color: $color-gray;
+      cursor: not-allowed;
+    }
+  }
+  
+  .page-info {
+    font-size: 1rem;
+    color: $color-primary;
+  }
+}
+
+.no-toys {
+  text-align: center;
+  margin: $spacing-xl 0;
+  color: $color-gray-dark;
+  font-size: 1.2rem;
+}

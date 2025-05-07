@@ -1,6 +1,48 @@
+@import '../setup/variables';
+@import '../setup/mixins';
+
+
 .main-layout {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+
+.grid {
+  display: grid;
+  gap: $spacing-md;
+  
+  &--2-cols {
+    grid-template-columns: repeat(2, 1fr);
+    
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
   }
+  
+  &--3-cols {
+    grid-template-columns: repeat(3, 1fr);
+    
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.flex {
+  @include flex;
+  
+  &--column {
+    flex-direction: column;
+  }
+  
+  &--center {
+    @include flex-center;
+  }
+  
+  &--between {
+    @include flex-between;
+  }
+}
