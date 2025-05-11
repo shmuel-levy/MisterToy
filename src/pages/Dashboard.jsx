@@ -19,39 +19,33 @@ export function Dashboard() {
         loadStats()
     }, [])
 
-    function loadToys() {
-        toyService.query()
-            .then(response => {
-                setToys(response.toys || [])
-            })
-            .catch(err => {
-                console.error('Error loading toys:', err)
-            })
+    async function loadToys() {
+        try {
+            const response = await toyService.query()
+            setToys(response.toys || [])
+        } catch (err) {
+            console.error('Error loading toys:', err)
+        }
     }
 
-    function loadStats() {
+    async function loadStats() {
         setIsLoading(true)
         
-        toyService.getLabelStats()
-            .then(setLabelStats)
-            .catch(err => {
-                console.error('Error loading label stats:', err)
-            })
-        
-        toyService.getPriceStats()
-            .then(setPriceStats)
-            .catch(err => {
-                console.error('Error loading price stats:', err)
-            })
-        
-        toyService.getInventoryStats()
-            .then(setInventoryStats)
-            .catch(err => {
-                console.error('Error loading inventory stats:', err)
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
+        try {
+            const [labelData, priceData, inventoryData] = await Promise.all([
+                toyService.getLabelStats(),
+                toyService.getPriceStats(),
+                toyService.getInventoryStats()
+            ])
+            
+            setLabelStats(labelData)
+            setPriceStats(priceData)
+            setInventoryStats(inventoryData)
+        } catch (err) {
+            console.error('Error loading stats:', err)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const labelData = {

@@ -3,24 +3,23 @@ import { toyService } from '../services/toy.service-remote.js'
 
 export function ToyDetails({ toyId, onBack, onEdit }) {
   const [toy, setToy] = useState(null)
-
+  
   useEffect(() => {
     loadToy()
   }, [])
-
-  function loadToy() {
-    toyService.getById(toyId)
-      .then(toy => {
-        setToy(toy)
-      })
-      .catch(err => {
-        console.error('Error loading toy details:', err)
-        onBack()
-      })
+  
+  async function loadToy() {
+    try {
+      const toyData = await toyService.getById(toyId)
+      setToy(toyData)
+    } catch (err) {
+      console.error('Error loading toy details:', err)
+      onBack()
+    }
   }
-
+  
   if (!toy) return <div className="loading">Loading...</div>
-
+  
   return (
     <section className="toy-details">
       <div className="toy-details-header">
@@ -30,11 +29,11 @@ export function ToyDetails({ toyId, onBack, onEdit }) {
       
       <div className="toy-details-content">
         <div className="toy-image">
-          <img src={toy.imgUrl || 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg'} 
-               alt={toy.name} 
-               onError={(e) => {
-                 e.target.src = 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg'
-               }}
+          <img src={toy.imgUrl || 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg'}
+              alt={toy.name}
+              onError={(e) => {
+                e.target.src = 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg'
+              }}
           />
         </div>
         

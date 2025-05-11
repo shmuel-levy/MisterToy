@@ -10,7 +10,6 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
   const [isModified, setIsModified] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   
-  // Use our custom hook
   const showUnsavedChangesPrompt = useUnsavedChanges(isModified)
 
   useEffect(() => {
@@ -18,31 +17,27 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
     if (toyId) loadToy()
   }, [])
   
-  // Check for modifications
   useEffect(() => {
     if (!originalToy) return
     
-    // Compare current state with original
     const isChanged = JSON.stringify(toyToEdit) !== JSON.stringify(originalToy)
     setIsModified(isChanged)
   }, [toyToEdit, originalToy])
 
-  function loadToy() {
+  async function loadToy() {
     setIsLoading(true)
     
-    toyService.getById(toyId)
-      .then(toy => {
-        setToyToEdit(toy)
-        setOriginalToy(JSON.parse(JSON.stringify(toy))) 
-      })
-      .catch(err => {
-        console.error('Error loading toy for edit:', err)
-        showErrorMsg('Failed to load toy')
-        onCancel()
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    try {
+      const toy = await toyService.getById(toyId)
+      setToyToEdit(toy)
+      setOriginalToy(JSON.parse(JSON.stringify(toy)))
+    } catch (err) {
+      console.error('Error loading toy for edit:', err)
+      showErrorMsg('Failed to load toy')
+      onCancel()
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   function loadLabels() {
@@ -84,24 +79,22 @@ export function ToyEdit({ toyId, onSaveToy, onCancel }) {
     onCancel()
   }
 
-  function onSubmitForm(ev) {
+  async function onSubmitForm(ev) {
     ev.preventDefault()
     setIsLoading(true)
     
-    toyService.save(toyToEdit)
-      .then(savedToy => {
-        setIsModified(false)
-        const isNew = !toyToEdit._id
-        showSuccessMsg(isNew ? 'Toy added successfully!' : 'Toy updated successfully!')
-        onSaveToy(savedToy)
-      })
-      .catch(err => {
-        console.error('Error saving toy:', err)
-        showErrorMsg('Failed to save toy')
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    try {
+      const savedToy = await toyService.save(toyToEdit)
+      setIsModified(false)
+      const isNew = !toyToEdit._id
+      showSuccessMsg(isNew ? 'Toy added successfully!' : 'Toy updated successfully!')
+      onSaveToy(savedToy)
+    } catch (err) {
+      console.error('Error saving toy:', err)
+      showErrorMsg('Failed to save toy')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
