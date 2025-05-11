@@ -1,18 +1,14 @@
 @import '../setup/variables';
 @import '../setup/mixins';
 
-
 .toy-preview {
   @include card;
-  @include transition(transform 0.3s, box-shadow 0.3s);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: $box-shadow-lg;
-  }
-  
-
   .toy-img-container {
+    position: relative;
     height: 200px;
     overflow: hidden;
     
@@ -20,57 +16,92 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      @include transition(transform 0.5s);
+      @include transition;
+    }
+    
+    .status-badge {
+      @include badge;
+      position: absolute;
+      top: $spacing-sm;
+      right: $spacing-sm;
+      z-index: 1;
       
-      &:hover {
-        transform: scale(1.05);
+      &.sale {
+        background-color: $color-accent;
+      }
+      
+      &.new {
+        background-color: $color-primary-light;
+      }
+      
+      &.featured {
+        background-color: $color-secondary;
       }
     }
   }
   
   .toy-info {
-    padding: $spacing-sm;
+    padding: $spacing-md;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     
     h3 {
-      margin-top: 0;
-      margin-bottom: $spacing-xs;
-      font-size: 1.2rem;
+      margin: 0 0 $spacing-xs;
+      font-size: $font-size-lg;
+      color: $color-dark;
+      @include truncate;
     }
     
     .price {
-      font-weight: bold;
-      font-size: 1.2rem;
-      color: $color-secondary;
+      font-weight: 600;
+      font-size: $font-size-lg;
+      color: $color-accent;
       margin-bottom: $spacing-xs;
     }
     
     .stock-status {
       margin-bottom: $spacing-xs;
+      font-size: $font-size-sm;
       
       .in-stock {
         color: $color-success;
-        font-weight: bold;
       }
       
       .out-of-stock {
         color: $color-danger;
-        font-weight: bold;
       }
     }
     
-
     .labels {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: $spacing-xs;
+      gap: $spacing-xs;
+      margin-bottom: $spacing-sm;
       
       .label {
-        background-color: $color-yellow;
-        padding: 3px 8px;
-        border-radius: 12px;
-        font-size: 0.8rem;
+        @include badge($color-gray-light);
+        color: $color-dark;
       }
+    }
+    
+    .description {
+      font-size: $font-size-sm;
+      color: $color-gray-dark;
+      margin-bottom: $spacing-sm;
+      @include truncate(2);
+    }
+    
+    .action-btn {
+      @include button;
+      margin-top: auto;
+      width: 100%;
+    }
+  }
+  
+  &:hover {
+    .toy-img-container img {
+      transform: scale(1.05);
     }
   }
 }

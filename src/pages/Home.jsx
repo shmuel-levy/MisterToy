@@ -1,4 +1,4 @@
-import img from "/images/toys-store-banner.jpeg";
+import img from "/images/toys-store-banner.jpeg"
 
 
 

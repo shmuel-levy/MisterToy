@@ -1,66 +1,93 @@
 @import '../setup/variables';
 @import '../setup/mixins';
 
-
 .app {
-  @include flex-column;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   
   main {
-    flex-grow: 1;
-    padding: 20px 0;
+    flex: 1;
+    padding: $spacing-md 0;
   }
 }
 
 .app-header {
-  background-color: $color-primary;
-  color: $color-white;
+  background-color: $color-white;
+  box-shadow: $box-shadow-sm;
   padding: $spacing-sm 0;
-  box-shadow: $box-shadow-md;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   
   .header-content {
     @include flex-between;
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding: 0 $container-padding;
   }
   
   .logo {
     h1 {
       margin: 0;
-      font-size: 1.8rem;
+      font-size: $font-size-xl;
+      font-weight: 700;
+      color: $color-primary;
+      
+      span {
+        color: $color-accent;
+      }
     }
   }
   
-
   .main-nav {
     display: flex;
-    gap: 1.5rem;
+    gap: $spacing-md;
     
     a {
-      color: $color-white;
-      padding: 0.5rem;
-      border-radius: $border-radius-sm;
+      position: relative;
+      color: $color-gray-dark;
+      text-decoration: none;
+      padding: $spacing-xs 0;
+      font-weight: 500;
       @include transition;
       
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $color-primary;
+        @include transition;
+      }
+      
       &:hover {
-        background-color: rgba($color-white, 0.1);
-        text-decoration: none;
+        color: $color-primary;
+        
+        &::after {
+          width: 100%;
+        }
       }
       
       &.active {
-        font-weight: bold;
-        background-color: rgba($color-white, 0.15);
+        color: $color-primary;
+        
+        &::after {
+          width: 100%;
+        }
       }
     }
   }
   
   @include mobile {
-    .header-content {
-      flex-direction: column;
-      gap: $spacing-sm;
+    .logo h1 {
+      font-size: $font-size-lg;
     }
     
     .main-nav {
-      width: 100%;
-      justify-content: center;
+      gap: $spacing-sm;
     }
   }
 }

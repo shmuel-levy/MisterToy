@@ -17,56 +17,50 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
         loadToys()
     }, [filterBy, pagination.pageIdx])
     
-    function loadToys() {
+    async function loadToys() {
         setIsLoading(true)
         
-
         const queryParams = {
             ...filterBy,
             pageIdx: pagination.pageIdx
         }
         
-        toyService.query(queryParams)
-            .then(response => {
-         
-                setToys(response.toys || [])
-                setPagination(prev => ({ 
-                    ...prev, 
-                    totalPages: response.totalPages || 1 
-                }))
-            })
-            .catch(err => {
-                console.error('Error loading toys:', err)
-                showErrorMsg('Failed to load toys')
-                setToys([])
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
+        try {
+            const response = await toyService.query(queryParams)
+            setToys(response.toys || [])
+            setPagination(prev => ({ 
+                ...prev, 
+                totalPages: response.totalPages || 1 
+            }))
+        } catch (err) {
+            console.error('Error loading toys:', err)
+            showErrorMsg('Failed to load toys')
+            setToys([])
+        } finally {
+            setIsLoading(false)
+        }
     }
     
     function onSetFilter(newFilterBy) {
-
         setPagination(prev => ({ ...prev, pageIdx: 0 }))
         setFilterBy(newFilterBy)
     }
     
-    function onRemoveToy(toyId) {
-        toyService.remove(toyId)
-            .then(() => {
-                setToys(prevToys => prevToys.filter(toy => toy._id !== toyId))
-                showSuccessMsg('Toy removed successfully!')
-        
-                if (toys.length === 1 && pagination.pageIdx > 0) {
-                    setPagination(prev => ({ ...prev, pageIdx: prev.pageIdx - 1 }))
-                } else {
-                    loadToys()
-                }
-            })
-            .catch(err => {
-                console.error('Error removing toy:', err)
-                showErrorMsg('Failed to remove toy')
-            })
+    async function onRemoveToy(toyId) {
+        try {
+            await toyService.remove(toyId)
+            setToys(prevToys => prevToys.filter(toy => toy._id !== toyId))
+            showSuccessMsg('Toy removed successfully!')
+    
+            if (toys.length === 1 && pagination.pageIdx > 0) {
+                setPagination(prev => ({ ...prev, pageIdx: prev.pageIdx - 1 }))
+            } else {
+                loadToys()
+            }
+        } catch (err) {
+            console.error('Error removing toy:', err)
+            showErrorMsg('Failed to remove toy')
+        }
     }
     
     function handlePageChange(newPageIdx) {

@@ -1,0 +1,147 @@
+@import 'variables';
+@import 'functions';
+
+
+.toy-bg-pattern {
+  background-color: $color-light;
+  background-image: 
+    radial-gradient(circle, transparent 20%, $color-white 20%, $color-white 80%, transparent 80%, transparent),
+    radial-gradient(circle, transparent 20%, $color-white 20%, $color-white 80%, transparent 80%, transparent);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+.toy-border {
+  border: 4px solid $toy-primary;
+  border-radius: $border-radius-md;
+  box-shadow: toy-shadow($toy-primary, 2);
+}
+
+.toy-card {
+  background-color: $color-white;
+  border-radius: $border-radius-lg;
+  border-top: 5px solid $toy-secondary;
+  box-shadow: toy-shadow($color-black, 1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  
+  &:hover {
+    transform: translateY(-5px) rotate(1deg);
+    box-shadow: toy-shadow($color-black, 2);
+  }
+}
+
+.toy-button {
+  display: inline-block;
+  padding: $spacing-sm $spacing-md;
+  background-color: $toy-primary;
+  color: $color-white;
+  border: none;
+  border-radius: $border-radius-md;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 0 darken-color($toy-primary, 15%);
+  transition: all 0.2s;
+  
+  &:hover {
+    background-color: lighten-color($toy-primary, 5%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 darken-color($toy-primary, 15%);
+  }
+  
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 darken-color($toy-primary, 15%);
+  }
+  
+  &--secondary {
+    background-color: $toy-secondary;
+    box-shadow: 0 4px 0 darken-color($toy-secondary, 15%);
+    
+    &:hover {
+      background-color: lighten-color($toy-secondary, 5%);
+      box-shadow: 0 6px 0 darken-color($toy-secondary, 15%);
+    }
+    
+    &:active {
+      box-shadow: 0 2px 0 darken-color($toy-secondary, 15%);
+    }
+  }
+  
+  &--accent {
+    background-color: $toy-accent;
+    color: $color-dark;
+    box-shadow: 0 4px 0 darken-color($toy-accent, 15%);
+    
+    &:hover {
+      background-color: lighten-color($toy-accent, 5%);
+      box-shadow: 0 6px 0 darken-color($toy-accent, 15%);
+    }
+    
+    &:active {
+      box-shadow: 0 2px 0 darken-color($toy-accent, 15%);
+    }
+  }
+}
+
+.toy-badge {
+  display: inline-block;
+  padding: $spacing-xs $spacing-sm;
+  background-color: $toy-accent;
+  color: $color-dark;
+  font-weight: bold;
+  font-size: $font-size-sm;
+  border-radius: $border-radius-xl;
+  
+  &--new {
+    background-color: $toy-green;
+    color: $color-white;
+  }
+  
+  &--sale {
+    background-color: $toy-primary;
+    color: $color-white;
+  }
+  
+  &--featured {
+    background-color: $toy-purple;
+    color: $color-white;
+  }
+}
+
+.toy-text {
+  font-family: $font-family-display;
+  color: $toy-primary;
+  letter-spacing: 0.5px;
+  
+  &--large {
+    font-size: $font-size-xxl;
+  }
+  
+  &--accent {
+    color: $toy-secondary;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.toy-bounce {
+  animation: bounce 2s ease infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+.toy-wiggle {
+  animation: wiggle 1s ease infinite;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}

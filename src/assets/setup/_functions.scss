@@ -1,0 +1,26 @@
+
+@function lighten-color($color, $amount: 10%) {
+    @return lighten($color, $amount);
+  }
+  
+  @function darken-color($color, $amount: 10%) {
+    @return darken($color, $amount);
+  }
+  
+  @function transparent-color($color, $opacity: 0.2) {
+    @return rgba($color, $opacity);
+  }
+  
+  @function toy-spacing($base: 1rem, $multiplier: 1) {
+    @return $base * $multiplier;
+  }
+  
+  @function toy-shadow($color: #000, $depth: 1) {
+    $offset: 2px * $depth;
+    @return 0 $offset ($offset * 2) rgba($color, 0.2);
+  }
+  
+  @function toy-border($color: #333, $width: 2px) {
+    @return $width solid $color;
+  }
+  

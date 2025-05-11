@@ -1,18 +1,12 @@
-/*
-* Mister Toy SCSS
-* Main entry point for all SCSS files
-*/
 
 /* Setup */
 @import 'setup/variables';
-@import 'setup/functions';
 @import 'setup/mixins';
-@import 'setup/typography';
 
 /* Basics */
-// @import 'basics/helpers';
-@import 'basics/layout';
 @import 'basics/base';
+@import 'basics/layout';
+
 
 /* Components */
 @import 'components/app-header';

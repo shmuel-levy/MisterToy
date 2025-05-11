@@ -4,45 +4,69 @@
 .toy-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: $spacing-lg;
+  gap: $spacing-md;
   margin-bottom: $spacing-lg;
   
   @include mobile {
-    gap: $spacing-md;
+    gap: $spacing-sm;
   }
 }
 
 .empty-list {
   text-align: center;
   padding: $spacing-xl 0;
-  font-size: 1.2rem;
-  color: $color-primary;
+  color: $color-gray;
+  
+  .empty-icon {
+    font-size: $font-size-xxl;
+    margin-bottom: $spacing-sm;
+    color: $color-gray-light;
+  }
+  
+  h3 {
+    margin-bottom: $spacing-sm;
+    color: $color-gray-dark;
+  }
 }
 
 .pagination {
   @include flex-center;
   margin: $spacing-lg 0;
-  user-select: none;
   
   .page-btn {
-    @include button-primary;
-    margin: 0 $spacing-sm;
+    @include button;
+    min-width: 40px;
+    height: 40px;
+    margin: 0 $spacing-xs;
+    padding: 0;
     
     &:disabled {
-      background-color: $color-gray;
+      opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
     }
   }
   
   .page-info {
-    font-size: 1rem;
-    color: $color-primary;
+    margin: 0 $spacing-md;
+    color: $color-gray-dark;
   }
 }
 
-.no-toys {
-  text-align: center;
-  margin: $spacing-xl 0;
-  color: $color-gray-dark;
-  font-size: 1.2rem;
+.loading {
+  @include flex-center;
+  height: 200px;
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba($color-primary, 0.2);
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

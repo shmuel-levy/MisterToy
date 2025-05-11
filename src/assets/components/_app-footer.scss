@@ -1,20 +1,78 @@
 @import '../setup/variables';
-
+@import '../setup/mixins';
 
 .app-footer {
-  background-color: #2c3e50;
-  color: white;
-  padding: 1rem 0;
-  text-align: center;
-}
-
-
-.footer-content {
-  max-width: $container-max-width;
-  margin: 0 auto;
+  background-color: $color-dark;
+  color: $color-white;
+  padding: $spacing-lg 0;
+  
+  .footer-content {
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding: 0 $container-padding;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: $spacing-lg;
+    
+    @include mobile {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+  
+  .footer-logo {
+    h2 {
+      margin: 0 0 $spacing-xs;
+      font-size: $font-size-xl;
+      color: $color-white;
+      
+      span {
+        color: $color-accent;
+      }
+    }
+    
+    p {
+      color: $color-gray-light;
+      max-width: 300px;
+      margin: 0;
+    }
+  }
+  
+  .footer-nav {
+    h3 {
+      font-size: $font-size-base;
+      color: $color-primary-light;
+      margin: 0 0 $spacing-sm;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      
+      li {
+        margin-bottom: $spacing-xs;
+      }
+      
+      a {
+        color: $color-gray-light;
+        text-decoration: none;
+        @include transition;
+        
+        &:hover {
+          color: $color-white;
+        }
+      }
+    }
+  }
   
   .copyright {
-    font-size: 0.9rem;
-    opacity: 0.8;
+    text-align: center;
+    padding-top: $spacing-md;
+    margin-top: $spacing-md;
+    border-top: 1px solid rgba($color-white, 0.1);
+    color: $color-gray-light;
+    font-size: $font-size-sm;
   }
 }

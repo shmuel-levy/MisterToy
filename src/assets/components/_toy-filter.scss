@@ -1,11 +1,10 @@
 @import '../setup/variables';
 @import '../setup/mixins';
 
-
 .toy-filter {
   background-color: $color-white;
-  border-radius: $border-radius-lg;
-  box-shadow: $box-shadow-md;
+  border-radius: $border-radius-md;
+  box-shadow: $box-shadow-sm;
   padding: $spacing-md;
   margin-bottom: $spacing-lg;
   
@@ -25,15 +24,24 @@
     flex: 1;
     min-width: 200px;
     
-    input[type="text"] {
+    label {
+      display: block;
+      margin-bottom: $spacing-xs;
+      font-size: $font-size-sm;
+      color: $color-gray-dark;
+    }
+    
+    input[type="text"],
+    input[type="search"] {
       width: 100%;
       padding: $spacing-xs $spacing-sm;
-      border: 1px solid #ddd;
+      border: 1px solid $color-gray-light;
       border-radius: $border-radius-sm;
-      font-size: 1rem;
+      font-size: $font-size-base;
+      transition: border-color 0.3s;
       
       &:focus {
-        border-color: $color-secondary;
+        border-color: $color-primary;
         outline: none;
       }
     }
@@ -41,39 +49,39 @@
     select {
       width: 100%;
       padding: $spacing-xs $spacing-sm;
-      border: 1px solid #ddd;
+      border: 1px solid $color-gray-light;
       border-radius: $border-radius-sm;
-      font-size: 1rem;
+      font-size: $font-size-base;
       background-color: $color-white;
       cursor: pointer;
-      
-      &.sort-select {
-        background-color: $color-light;
-        border-color: #bdc3c7;
-      }
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 30px;
     }
   }
   
   .labels-filter {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px 15px;
-    max-width: 100%;
+    gap: $spacing-xs;
+    margin-top: $spacing-xs;
     
     .label-checkbox {
       display: flex;
       align-items: center;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: $font-size-sm;
       
       input {
-        margin-right: 5px;
+        margin-right: $spacing-xs;
       }
     }
   }
   
   .filter-button {
-    @include button-primary;
+    @include button($color-primary, $color-white);
     margin-left: auto;
     
     @include mobile {
