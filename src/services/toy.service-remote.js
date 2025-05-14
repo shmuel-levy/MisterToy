@@ -13,7 +13,9 @@ export const toyService = {
     getLabels,
     getLabelStats,
     getPriceStats,
-    getInventoryStats
+    getInventoryStats,
+    addMsg,
+    removeMsg
 }
 
 function query(filterBy = getDefaultFilter()) {
@@ -172,6 +174,14 @@ function _getAvgPriceByLabelMap(toys) {
     })
     
     return avgPriceByLabelMap
+}
+
+function addMsg(toyId, msg) {
+    return httpService.post(`${BASE_URL}${toyId}/msg`, { txt: msg })
+}
+
+function removeMsg(toyId, msgId) {
+    return httpService.delete(`${BASE_URL}${toyId}/msg/${msgId}`)
 }
 
 function _getInStockPercentageByLabelMap(toys) {

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { ToyList } from '../cmps/ToyList.jsx'
 import { ToyFilter } from '../cmps/ToyFilter.jsx'
-import { toyService } from '../services/toy.service-remote.js'
+import { toyService } from '../services/toy.service-remote.js' 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
-export function ToyIndex({ onSelectToy, onAddToy }) {
+export function ToyIndex({ onSelectToy, onAddToy, user }) {
     const [toys, setToys] = useState([])
     const [filterBy, setFilterBy] = useState(toyService.getDefaultFilter())
     const [isLoading, setIsLoading] = useState(false)
@@ -47,6 +47,17 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
     }
     
     async function onRemoveToy(toyId) {
+
+        if (!user) {
+            showErrorMsg('Please login to remove toys')
+            return
+        }
+        
+        if (!user.isAdmin) {
+            showErrorMsg('Only admins can remove toys')
+            return
+        }
+        
         try {
             await toyService.remove(toyId)
             setToys(prevToys => prevToys.filter(toy => toy._id !== toyId))
@@ -69,11 +80,33 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
         }
     }
     
+    function handleAddToy() {
+  
+        if (!user) {
+            showErrorMsg('Please login to add toys')
+            return
+        }
+        
+        if (!user.isAdmin) {
+            showErrorMsg('Only admins can add toys')
+            return
+        }
+        
+        onAddToy()
+    }
+    
     return (
         <section className="toy-index">
             <div className="index-header">
                 <h1>Our Toy Collection</h1>
-                <button className="btn-add" onClick={onAddToy}>Add New Toy</button>
+            
+                <button 
+                    className={`btn-add ${(!user || !user.isAdmin) ? 'disabled' : ''}`}
+                    onClick={handleAddToy}
+                    disabled={!user || !user.isAdmin}
+                >
+                    Add New Toy
+                </button>
             </div>
             
             <ToyFilter onSetFilter={onSetFilter} />
@@ -89,7 +122,8 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
                     <ToyList 
                         toys={toys} 
                         onRemoveToy={onRemoveToy} 
-                        onSelectToy={onSelectToy} 
+                        onSelectToy={onSelectToy}
+                        user={user} 
                     />
                     
                     {toys.length > 0 && (
@@ -99,7 +133,7 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
                                 onClick={() => handlePageChange(pagination.pageIdx - 1)}
                                 disabled={pagination.pageIdx === 0 || isLoading}
                             >
-                                &laquo Previous
+                                &laquo; Previous
                             </button>
                             
                             <span className="page-info">
@@ -111,7 +145,7 @@ export function ToyIndex({ onSelectToy, onAddToy }) {
                                 onClick={() => handlePageChange(pagination.pageIdx + 1)}
                                 disabled={pagination.pageIdx >= pagination.totalPages - 1 || isLoading}
                             >
-                                Next &raquo
+                                Next &raquo;
                             </button>
                         </div>
                     )}

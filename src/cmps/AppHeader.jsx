@@ -1,4 +1,4 @@
-export function AppHeader({ onSetPage, currentPage }) {
+export function AppHeader({ onSetPage, currentPage, user, onLogout }) {
   return (
     <header className="app-header">
       <div className="header-content main-layout">
@@ -46,6 +46,25 @@ export function AppHeader({ onSetPage, currentPage }) {
             About
           </a>
         </nav>
+        
+        <div className="user-actions">
+          {user ? (
+            <div className="user-info">
+              <span>Hello, {user.fullname}</span>
+              <button className="btn-logout" onClick={onLogout}>Logout</button>
+            </div>
+          ) : (
+            <button 
+              className="btn-login" 
+              onClick={(e) => {
+                e.preventDefault()
+                onSetPage('login')
+              }}
+            >
+              Login
+            </button>
+          )}
+        </div>
       </div>
     </header>
   )
