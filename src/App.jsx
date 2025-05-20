@@ -12,7 +12,7 @@ import { ChatButton } from './cmps/ChatButton'
 import { UserMsg } from './cmps/UserMsg'
 import { useOnlineStatus } from './hooks/useOnlineStatus'
 import { eventBus } from './services/event-bus.service'
-import { userService } from './services/user.service' 
+import { userService } from './services/user/user.service.remote' 
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')

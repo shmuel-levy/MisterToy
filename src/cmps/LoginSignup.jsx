@@ -1,6 +1,6 @@
 // cmps/LoginSignup.jsx
 import { useState } from 'react'
-import { userService } from '../services/user.service.js'
+import { userService } from '../services/user/user.service.remote' 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
 export function LoginSignup({ onLogin }) {

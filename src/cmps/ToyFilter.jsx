@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { toyService } from '../services/toy.service-remote.js'
+import { toyService } from '../services/toy.service-remote.js' 
 import { MaterialUi } from './MaterialUi.jsx'
 
 export function ToyFilter({ onSetFilter }) {
@@ -9,23 +9,23 @@ export function ToyFilter({ onSetFilter }) {
     useEffect(() => {
         setLabels(toyService.getLabels())
     }, [])
-    
+
     useEffect(() => {
+ 
         onSetFilter(filterBy)
     }, [filterBy])
     
     function handleChange({ target }) {
         const { name, value, type, checked } = target
         
-        const val = type === 'checkbox' ? checked : value
+        let newVal = type === 'checkbox' ? checked : value
      
-        let newVal = val
         if (name === 'inStock') {
-            if (val === 'all') {
+            if (value === 'all') {
                 newVal = null
-            } else if (val === 'true') {
+            } else if (value === 'true') {
                 newVal = true
-            } else if (val === 'false') {
+            } else if (value === 'false') {
                 newVal = false
             }
         }
@@ -33,12 +33,14 @@ export function ToyFilter({ onSetFilter }) {
         setFilterBy(prevFilter => ({ ...prevFilter, [name]: newVal }))
     }
     
+ 
     function handleLabelSelectionChange(newLabels) {
         setFilterBy(prevFilter => ({
-          ...prevFilter,
-          labels: newLabels
+            ...prevFilter,
+            labels: newLabels
         }))
-      }
+    }
+    
 
     function handleLabelChange(label) {
         setFilterBy(prevFilter => {
@@ -60,8 +62,21 @@ export function ToyFilter({ onSetFilter }) {
     
     function handleSortChange(e) {
         const { value } = e.target
-        let [type, desc] = value.split('|')
-        desc = desc === 'true'
+        
+        if (!value) {
+       
+            setFilterBy(prevFilter => ({
+                ...prevFilter,
+                sortBy: { type: '', desc: false }
+            }))
+            return
+        }
+        
+    
+        const [type, descStr] = value.split('|')
+        const desc = descStr === 'true'
+        
+        console.log('Setting sort:', { type, desc }) 
         
         setFilterBy(prevFilter => ({
             ...prevFilter,
@@ -71,11 +86,12 @@ export function ToyFilter({ onSetFilter }) {
     
     function onSubmitFilter(ev) {
         ev.preventDefault()
-        onSetFilter(filterBy)
+        onSetFilter(filterBy) 
     }
     
     const { txt, inStock, sortBy } = filterBy
-    const sortValue = sortBy?.type ? `${sortBy.type}|${sortBy.desc}` : ''
+ 
+    const sortValue = sortBy && sortBy.type ? `${sortBy.type}|${sortBy.desc}` : ''
     
     return (
         <section className="toy-filter">
@@ -122,13 +138,15 @@ export function ToyFilter({ onSetFilter }) {
                         </select>
                     </label>
                 </div>
+                
                 <div className="filter-group">
-  <MaterialUi 
-    labels={labels}
-    selectedLabels={filterBy.labels}
-    onLabelSelect={handleLabelSelectionChange}
-  />
-</div>
+                    <MaterialUi 
+                        labels={labels}
+                        selectedLabels={filterBy.labels}
+                        onLabelSelect={handleLabelSelectionChange}
+                    />
+                </div>
+                
                 <div className="filter-group">
                     <div className="labels-filter">
                         {labels.map(label => (
