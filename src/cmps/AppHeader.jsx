@@ -16,6 +16,16 @@ export function AppHeader({ onSetPage, currentPage, user, onLogout }) {
             Home
           </a>
           <a 
+  href="#" 
+  onClick={(e) => {
+    e.preventDefault()
+    onSetPage('reviews')
+  }}
+  className={currentPage === 'reviews' ? 'active' : ''}
+>
+  Reviews
+</a>
+          <a 
             href="#" 
             onClick={(e) => {
               e.preventDefault()

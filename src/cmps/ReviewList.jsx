@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { ReviewPreview } from './ReviewPreview'
+import { ReviewPreview } from './ReviewPreview.jsx'
 import { showErrorMsg } from '../services/event-bus.service'
-import { socketService, SOCKET_EVENT_REVIEW_ADDED, SOCKET_EVENT_REVIEW_REMOVED } from '../services/socket.service'
+// import { socketService, SOCKET_EVENT_REVIEW_ADDED, SOCKET_EVENT_REVIEW_REMOVED } from '../services/socket.service'
 
 export function ReviewList({ reviews: initialReviews, onRemove }) {
   const [reviews, setReviews] = useState(initialReviews || [])
@@ -11,9 +11,8 @@ export function ReviewList({ reviews: initialReviews, onRemove }) {
   }, [initialReviews])
 
   useEffect(() => {
-    // Listen for real-time updates
-    socketService.on(SOCKET_EVENT_REVIEW_ADDED, onReviewAdded)
-    socketService.on(SOCKET_EVENT_REVIEW_REMOVED, onReviewRemoved)
+    // socketService.on(SOCKET_EVENT_REVIEW_ADDED, onReviewAdded)
+    // socketService.on(SOCKET_EVENT_REVIEW_REMOVED, onReviewRemoved)
     
     // Clean up
     return () => {

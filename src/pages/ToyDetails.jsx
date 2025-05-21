@@ -78,13 +78,7 @@ export function ToyDetails({ toyId, onBack, onEdit, user }) {
       
       <div className="toy-details-content">
         <div className="toy-image">
-          <img 
-            src={toy.imgUrl || 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg'}
-            alt={toy.name}
-            onError={(e) => {
-              e.target.src = 'https://cdn.pixabay.com/photo/2017/07/28/18/33/toy-2549394_1280.jpg'
-            }}
-          />
+         <img src={`public/images/${toy.imgUrl}`} alt={toy.name} />
         </div>
         
         <div className="toy-info">

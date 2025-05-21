@@ -13,6 +13,7 @@ import { UserMsg } from './cmps/UserMsg'
 import { useOnlineStatus } from './hooks/useOnlineStatus'
 import { eventBus } from './services/event-bus.service'
 import { userService } from './services/user/user.service.remote' 
+import { ReviewExplore } from './pages/ReviewExplore.jsx'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -142,7 +143,9 @@ function App() {
       />
       
       <main className="main-layout">
-        {currentPage === 'home' && <Home />}
+        {currentPage === 'home' && <Home onSetPage={onSetPage} />}
+{currentPage === 'reviews' && <ReviewExplore />}
+
         {currentPage === 'toys' && (
           <ToyIndex
             onSelectToy={onSelectToy}

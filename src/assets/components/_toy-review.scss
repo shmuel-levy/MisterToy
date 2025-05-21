@@ -1,0 +1,159 @@
+/* Review Components Styling */
+
+/* Review List */
+.review-list {
+  margin-top: 2rem;
+}
+
+.review-list h2 {
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.no-reviews {
+  text-align: center;
+  color: #888;
+  margin: 2rem 0;
+  font-style: italic;
+}
+
+/* Review Preview */
+.review-preview {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.review-content {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.review-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.review-about, .review-by {
+  font-weight: bold;
+}
+
+.review-user {
+  color: #333;
+}
+
+.btn-remove {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: #f44336;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.btn-remove:hover {
+  opacity: 1;
+}
+
+/* Add Review */
+.add-review {
+  margin-bottom: 2rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.add-review textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  font-family: inherit;
+  margin-bottom: 0.75rem;
+}
+
+.btn-submit {
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+  background-color: #3a7bc8;
+}
+
+.btn-submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Review Explore Page */
+.review-explore {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.review-explore h1 {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.login-message {
+  text-align: center;
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+.review-form-container {
+  background-color: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.user-select {
+  margin-bottom: 1.5rem;
+}
+
+.user-select select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-family: inherit;
+  margin-top: 0.5rem;
+}
+
+/* User Details Page Reviews */
+.user-details .user-reviews {
+  margin-top: 2rem;
+}
+
+.add-review-section {
+  margin: 2rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}

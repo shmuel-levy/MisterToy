@@ -1,9 +1,17 @@
+import { lightGreen } from "@mui/material/colors"
+import { uploadService } from "../services/upload.service"
+
+ 
 export function ToyPreview({ toy }) {
-    return (
+async function uploadImg(ev){
+    const res = await uploadService.uploadImg(ev)
+    console.log(res);
+    
+}   
+ return (
         <article className="toy-preview">
             <div className="toy-img-container">
-            <img src={`/images/${toy.imgUrl}`} alt={toy.name} />
-
+            <img src={`public/images/${toy.imgUrl}`} alt={toy.name} />
 
             </div>
             <div className="toy-info">
@@ -20,6 +28,8 @@ export function ToyPreview({ toy }) {
                     ))}
                 </div>
             </div>
+            <input onChange = {uploadImg}
+type ="file" />
         </article>
     )
 }
