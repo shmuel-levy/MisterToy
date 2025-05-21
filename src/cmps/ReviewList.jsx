@@ -16,8 +16,8 @@ export function ReviewList({ reviews: initialReviews, onRemove }) {
     
     // Clean up
     return () => {
-      socketService.off(SOCKET_EVENT_REVIEW_ADDED, onReviewAdded)
-      socketService.off(SOCKET_EVENT_REVIEW_REMOVED, onReviewRemoved)
+      // socketService.off(SOCKET_EVENT_REVIEW_ADDED, onReviewAdded)
+      // socketService.off(SOCKET_EVENT_REVIEW_REMOVED, onReviewRemoved)
     }
   }, [])
 
