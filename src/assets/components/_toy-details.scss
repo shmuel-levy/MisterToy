@@ -1,130 +1,345 @@
-@import '../setup/variables';
-@import '../setup/mixins';
-
-
-
 .toy-details {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  background: $color-white;
+  border-radius: $border-radius-xl;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  padding: 25px;
-  margin-top: 20px;
-}
-
-.toy-details-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-
-.toy-details-header {
-  .btn-back {
-    background-color: $color-gray;
-    color: $color-white;
-    border: none;
-    border-radius: $border-radius-sm;
-    padding: $spacing-xs $spacing-sm;
-    margin-right: $spacing-md;
-    cursor: pointer;
-    @include transition;
+  padding: 0;
+  margin: $spacing-lg 0;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, $color-primary, $color-secondary, $color-primary-light, $color-accent);
+    background-size: 200% 100%;
+    animation: rainbow-flow 3s ease infinite;
+  }
+  
+  .toy-details-header {
+    @include flex-between;
+    align-items: center;
+    padding: $spacing-lg;
+    background: linear-gradient(135deg, rgba($color-primary, 0.1) 0%, rgba($color-secondary, 0.1) 100%);
+    border-bottom: 1px solid rgba($color-primary, 0.2);
     
-    &:hover {
-      background-color: $color-gray-dark;
+    .btn-back {
+      @include button($color-gray, $color-white);
+      font-family: $font-family-heading;
+      font-weight: 600;
+      
+      &::before {
+        content: '← ';
+        margin-right: $spacing-xs;
+      }
+      
+      &:hover {
+        transform: translateX(-3px) scale(1.05);
+      }
+    }
+    
+    h2 {
+      font-family: $font-family-heading;
+      font-size: $font-size-xxl;
+      color: $color-dark;
+      margin: 0;
+      text-align: center;
+      flex: 1;
+      background: linear-gradient(45deg, $color-primary, $color-secondary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
   }
-}
-
-.toy-details-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  margin-bottom: $spacing-lg;
   
-  @include mobile {
-    flex-direction: column;
-    gap: $spacing-md;
-  }
-}
-
-.toy-image {
-  flex: 1;
-  min-width: 300px;
-  max-width: 500px;
-  border-radius: $border-radius-md;
-  overflow: hidden;
-  box-shadow: $box-shadow-md;
-  
-  img {
-    width: 100%;
-    height: auto;
-    display: block;
-    @include transition;
+  .toy-details-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xl;
+    padding: $spacing-xl;
     
-    &:hover {
-      transform: scale(1.02);
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: $spacing-lg;
+      padding: $spacing-lg;
+    }
+    
+    .toy-image {
+      position: relative;
+      border-radius: $border-radius-lg;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba($color-primary, 0.3);
+      
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: $transition-base;
+        
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, 
+          rgba(255, 107, 107, 0.1), 
+          rgba(78, 205, 196, 0.1));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      &:hover::after {
+        opacity: 1;
+      }
+    }
+    
+    .toy-info {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-lg;
+      
+      .price {
+        font-family: $font-family-heading;
+        font-weight: 800;
+        font-size: 3rem;
+        background: linear-gradient(45deg, $color-primary, $color-secondary, $color-primary-light);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0;
+        animation: price-pulse 3s ease-in-out infinite;
+      }
+      
+      .stock-status {
+        font-size: $font-size-lg;
+        font-weight: 600;
+        padding: $spacing-md;
+        border-radius: $border-radius-lg;
+        text-align: center;
+        
+        .in-stock {
+          color: $color-white;
+          background: linear-gradient(135deg, $toy-green 0%, darken($toy-green, 15%) 100%);
+          padding: $spacing-sm $spacing-lg;
+          border-radius: $border-radius-pill;
+          animation: pulse-green 2s ease-in-out infinite;
+          
+          &::before {
+            content: '✓ ';
+            margin-right: $spacing-xs;
+          }
+        }
+        
+        .out-of-stock {
+          color: $color-white;
+          background: linear-gradient(135deg, $color-danger 0%, darken($color-danger, 15%) 100%);
+          padding: $spacing-sm $spacing-lg;
+          border-radius: $border-radius-pill;
+          
+          &::before {
+            content: '✗ ';
+            margin-right: $spacing-xs;
+          }
+        }
+      }
+      
+      .toy-labels {
+        h4 {
+          font-family: $font-family-heading;
+          color: $color-dark;
+          margin-bottom: $spacing-sm;
+          font-size: $font-size-lg;
+        }
+        
+        .labels {
+          display: flex;
+          flex-wrap: wrap;
+          gap: $spacing-sm;
+          
+          .label {
+            background: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
+            color: $color-white;
+            padding: $spacing-sm $spacing-lg;
+            border-radius: $border-radius-pill;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            
+            &:hover {
+              transform: translateY(-2px) scale(1.1);
+              box-shadow: 0 8px 20px rgba($color-primary, 0.4);
+            }
+          }
+        }
+      }
+      
+      .created-at {
+        color: $color-gray-dark;
+        font-style: italic;
+        font-size: $font-size-sm;
+        margin-top: auto;
+        
+        &::before {
+          content: '📅 ';
+          margin-right: $spacing-xs;
+        }
+      }
     }
   }
-}
-
-
-.toy-info {
-  flex: 1;
-  min-width: 300px;
-}
-
-.btn-edit {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.3s;
-}
-
-.btn-edit:hover {
-  background-color: #2980b9;
-}
-
-.chat-icon {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.chat-icon:hover {
-  background-color: #2980b9;
-}
-
-.chat-icon .icon {
-  font-size: 1.2rem;
-}
-
-.btn-remove {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-remove:hover {
-  background-color: #c0392b;
-}
-
-.btn-remove:disabled {
-  background-color: #95a5a6;
-  cursor: not-allowed;
+  
+  .toy-actions {
+    padding: $spacing-lg;
+    text-align: center;
+    border-top: 1px solid rgba($color-primary, 0.2);
+    background: rgba($color-primary, 0.05);
+    
+    .btn-edit {
+      @include button($color-secondary, $color-white);
+      font-family: $font-family-heading;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: $font-size-lg;
+      padding: $spacing-md $spacing-xl;
+      
+      &::before {
+        content: '✏️ ';
+        margin-right: $spacing-sm;
+      }
+    }
+  }
+  
+  .toy-messages {
+    padding: $spacing-xl;
+    background: rgba($color-primary, 0.03);
+    border-top: 1px solid rgba($color-primary, 0.2);
+    
+    h3 {
+      font-family: $font-family-heading;
+      color: $color-dark;
+      margin-bottom: $spacing-lg;
+      font-size: $font-size-xl;
+      text-align: center;
+      
+      &::before {
+        content: '💬 ';
+        margin-right: $spacing-sm;
+      }
+    }
+    
+    .add-message-form {
+      display: flex;
+      gap: $spacing-sm;
+      margin-bottom: $spacing-xl;
+      
+      input {
+        flex: 1;
+        padding: $spacing-md;
+        border: 2px solid rgba($color-primary, 0.3);
+        border-radius: $border-radius-lg;
+        font-size: $font-size-base;
+        transition: all 0.3s ease;
+        
+        &:focus {
+          border-color: $color-primary;
+          box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+          transform: scale(1.02);
+        }
+      }
+      
+      .btn-send {
+        @include button($color-primary, $color-white);
+        font-family: $font-family-heading;
+        font-weight: 600;
+        min-width: 100px;
+        
+        &::after {
+          content: ' 🚀';
+        }
+      }
+    }
+    
+    .messages-list {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .message-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $spacing-lg;
+        background: $color-white;
+        border-radius: $border-radius-lg;
+        margin-bottom: $spacing-md;
+        box-shadow: 0 4px 15px rgba($color-primary, 0.1);
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba($color-primary, 0.2);
+        }
+        
+        .message-content {
+          flex: 1;
+          
+          .message-author {
+            font-weight: 700;
+            color: $color-primary;
+            margin-right: $spacing-sm;
+            font-family: $font-family-heading;
+            
+            &::after {
+              content: ':';
+            }
+          }
+          
+          .message-text {
+            color: $color-gray-dark;
+            font-size: $font-size-base;
+          }
+        }
+        
+        .btn-delete-msg {
+          background: none;
+          border: none;
+          color: $color-danger;
+          font-size: $font-size-lg;
+          cursor: pointer;
+          padding: $spacing-xs;
+          border-radius: $border-radius-round;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background: rgba($color-danger, 0.1);
+            transform: scale(1.2);
+          }
+        }
+      }
+    }
+    
+    .login-prompt,
+    .no-messages {
+      text-align: center;
+      padding: $spacing-xl;
+      color: $color-gray;
+      font-style: italic;
+      background: rgba($color-gray-light, 0.5);
+      border-radius: $border-radius-lg;
+      border: 2px dashed rgba($color-gray, 0.3);
+    }
+  }
 }

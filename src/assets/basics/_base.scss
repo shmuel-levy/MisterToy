@@ -11,11 +11,29 @@ html {
   font-size: 16px;
   line-height: 1.6;
   color: $color-dark;
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: $color-light;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
   min-height: 100vh;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(255, 107, 107, 0.1) 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, rgba(78, 205, 196, 0.1) 2px, transparent 2px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: -1;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -28,10 +46,11 @@ h1, h2, h3, h4, h5, h6 {
 a {
   color: $color-primary;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: $transition-base;
   
   &:hover {
     color: darken($color-primary, 10%);
+    transform: translateY(-1px);
   }
 }
 
@@ -39,10 +58,11 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+  border-radius: $border-radius-sm;
 }
 
-button, 
-input[type="submit"],
+button,
+input[type="submit"], 
 input[type="button"] {
   cursor: pointer;
   font-family: $font-family-base;
@@ -53,26 +73,25 @@ input, textarea, select {
   font-size: $font-size-base;
 }
 
-// Focus styles for accessibility
 :focus {
   outline: 2px solid rgba($color-primary, 0.5);
   outline-offset: 2px;
 }
 
-// Clean scrollbar style
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
   background: $color-light;
+  border-radius: $border-radius-sm;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $color-gray-light;
-  border-radius: 5px;
+  background: linear-gradient(45deg, $color-primary, $color-secondary);
+  border-radius: $border-radius-sm;
   
   &:hover {
-    background: $color-gray;
+    background: linear-gradient(45deg, darken($color-primary, 10%), darken($color-secondary, 10%));
   }
 }

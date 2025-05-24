@@ -1,111 +1,72 @@
-@import 'variables';
-@import 'functions';
-
-
-.toy-bg-pattern {
+toy-bg-pattern {
   background-color: $color-light;
   background-image: 
-    radial-gradient(circle, transparent 20%, $color-white 20%, $color-white 80%, transparent 80%, transparent),
-    radial-gradient(circle, transparent 20%, $color-white 20%, $color-white 80%, transparent 80%, transparent);
-  background-size: 30px 30px;
-  background-position: 0 0, 15px 15px;
+    radial-gradient(circle, rgba(255, 107, 107, 0.1) 20%, transparent 20%),
+    radial-gradient(circle, rgba(78, 205, 196, 0.1) 20%, transparent 20%);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  animation: pattern-float 10s ease-in-out infinite;
+}
+
+@keyframes pattern-float {
+  0%, 100% { background-position: 0 0, 20px 20px; }
+  50% { background-position: 10px 10px, 30px 30px; }
 }
 
 .toy-border {
-  border: 4px solid $toy-primary;
+  border: 4px solid;
+  border-image: $gradient-rainbow 1;
   border-radius: $border-radius-md;
   box-shadow: toy-shadow($toy-primary, 2);
 }
 
 .toy-card {
-  background-color: $color-white;
-  border-radius: $border-radius-lg;
-  border-top: 5px solid $toy-secondary;
-  box-shadow: toy-shadow($color-black, 1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  
-  &:hover {
-    transform: translateY(-5px) rotate(1deg);
-    box-shadow: toy-shadow($color-black, 2);
-  }
+  @include card;
 }
 
 .toy-button {
-  display: inline-block;
-  padding: $spacing-sm $spacing-md;
-  background-color: $toy-primary;
-  color: $color-white;
-  border: none;
-  border-radius: $border-radius-md;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 0 darken-color($toy-primary, 15%);
-  transition: all 0.2s;
-  
-  &:hover {
-    background-color: lighten-color($toy-primary, 5%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 darken-color($toy-primary, 15%);
-  }
-  
-  &:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0 darken-color($toy-primary, 15%);
-  }
+  @include button($toy-primary, $color-white);
   
   &--secondary {
-    background-color: $toy-secondary;
-    box-shadow: 0 4px 0 darken-color($toy-secondary, 15%);
-    
-    &:hover {
-      background-color: lighten-color($toy-secondary, 5%);
-      box-shadow: 0 6px 0 darken-color($toy-secondary, 15%);
-    }
-    
-    &:active {
-      box-shadow: 0 2px 0 darken-color($toy-secondary, 15%);
-    }
+    @include button($toy-secondary, $color-white);
   }
   
   &--accent {
-    background-color: $toy-accent;
-    color: $color-dark;
-    box-shadow: 0 4px 0 darken-color($toy-accent, 15%);
+    @include button($toy-accent, $color-dark);
+  }
+  
+  &--rainbow {
+    background: $gradient-rainbow;
+    background-size: 200% 200%;
+    animation: rainbow-flow 3s ease infinite;
+    color: $color-white;
     
-    &:hover {
-      background-color: lighten-color($toy-accent, 5%);
-      box-shadow: 0 6px 0 darken-color($toy-accent, 15%);
-    }
-    
-    &:active {
-      box-shadow: 0 2px 0 darken-color($toy-accent, 15%);
+    @keyframes rainbow-flow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
   }
 }
 
 .toy-badge {
-  display: inline-block;
-  padding: $spacing-xs $spacing-sm;
-  background-color: $toy-accent;
-  color: $color-dark;
-  font-weight: bold;
-  font-size: $font-size-sm;
-  border-radius: $border-radius-xl;
+  @include badge($toy-accent);
   
   &--new {
-    background-color: $toy-green;
+    @include badge($toy-green);
     color: $color-white;
+    animation: wiggle 3s ease-in-out infinite;
   }
   
   &--sale {
-    background-color: $toy-primary;
+    @include badge($toy-primary);
     color: $color-white;
+    animation: bounce-sale 2s ease-in-out infinite;
   }
   
   &--featured {
-    background-color: $toy-purple;
+    @include badge($toy-purple);
     color: $color-white;
+    animation: glow 2s ease-in-out infinite alternate;
   }
 }
 
@@ -121,21 +82,42 @@
   &--accent {
     color: $toy-secondary;
   }
+  
+  &--rainbow {
+    background: $gradient-rainbow;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
-
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
 
-.toy-bounce {
-  animation: bounce 2s ease infinite;
+@keyframes bounce-sale {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(5deg); }
 }
 
 @keyframes wiggle {
-  0%, 100% { transform: rotate(0); }
-  25% { transform: rotate(-5deg); }
-  75% { transform: rotate(5deg); }
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 5px rgba(155, 89, 182, 0.5); }
+  to { box-shadow: 0 0 20px rgba(155, 89, 182, 0.8); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.toy-bounce {
+  animation: bounce 2s ease infinite;
 }
 
 .toy-wiggle {
@@ -144,4 +126,12 @@
   &:hover {
     animation-play-state: paused;
   }
+}
+
+.toy-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.toy-float {
+  @include floating-animation(3s);
 }

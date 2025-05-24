@@ -2,11 +2,13 @@
 @import '../setup/mixins';
 
 .toy-filter {
-  background-color: $color-white;
-  border-radius: $border-radius-md;
-  box-shadow: $box-shadow-sm;
-  padding: $spacing-md;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-md;
+  padding: $spacing-lg;
   margin-bottom: $spacing-lg;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   
   form {
     display: flex;
@@ -27,38 +29,53 @@
     label {
       display: block;
       margin-bottom: $spacing-xs;
+      font-family: $font-family-heading;
       font-size: $font-size-sm;
-      color: $color-gray-dark;
+      font-weight: 600;
+      color: $color-dark;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     input[type="text"],
     input[type="search"] {
       width: 100%;
-      padding: $spacing-xs $spacing-sm;
-      border: 1px solid $color-gray-light;
-      border-radius: $border-radius-sm;
+      padding: $spacing-sm $spacing-md;
+      border: 2px solid transparent;
+      border-radius: $border-radius-md;
       font-size: $font-size-base;
-      transition: border-color 0.3s;
+      background: rgba(255, 255, 255, 0.8);
+      transition: $transition-base;
       
       &:focus {
-        border-color: $color-primary;
         outline: none;
+        border-color: $color-primary;
+        background: $color-white;
+        transform: scale(1.02);
+        box-shadow: 0 5px 15px rgba($color-primary, 0.3);
       }
     }
     
     select {
       width: 100%;
-      padding: $spacing-xs $spacing-sm;
-      border: 1px solid $color-gray-light;
-      border-radius: $border-radius-sm;
+      padding: $spacing-sm $spacing-md;
+      border: 2px solid transparent;
+      border-radius: $border-radius-md;
       font-size: $font-size-base;
-      background-color: $color-white;
+      background: rgba(255, 255, 255, 0.8);
       cursor: pointer;
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 10px center;
       padding-right: 30px;
+      
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        background-color: $color-white;
+        transform: scale(1.02);
+      }
     }
   }
   
@@ -82,6 +99,7 @@
   
   .filter-button {
     @include button($color-primary, $color-white);
+    background: linear-gradient(135deg, $color-primary 0%, lighten($color-primary, 10%) 100%);
     margin-left: auto;
     
     @include mobile {

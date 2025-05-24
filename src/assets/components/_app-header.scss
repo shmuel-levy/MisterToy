@@ -13,29 +13,46 @@
 }
 
 .app-header {
-  background-color: $color-white;
-  box-shadow: $box-shadow-sm;
-  padding: $spacing-sm 0;
+  background: linear-gradient(135deg, 
+    $color-primary 0%, 
+    $color-secondary 25%, 
+    $color-primary-light 50%, 
+    $color-accent 75%, 
+    $color-primary 100%);
+  background-size: 400% 400%;
+  animation: rainbow-flow 8s ease infinite;
+  box-shadow: 0 8px 40px rgba($color-primary, 0.3);
+  padding: $spacing-md 0;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
   
   .header-content {
     @include flex-between;
     max-width: $container-max-width;
     margin: 0 auto;
     padding: 0 $container-padding;
+    align-items: center;
   }
   
   .logo {
     h1 {
       margin: 0;
-      font-size: $font-size-xl;
-      font-weight: 700;
-      color: $color-primary;
+      font-family: $font-family-heading;
+      font-size: $font-size-xxl;
+      font-weight: 900;
+      color: $color-white;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+      animation: logo-bounce 4s ease-in-out infinite;
+      position: relative;
       
-      span {
-        color: $color-accent;
+      &::after {
+        content: '🎪';
+        position: absolute;
+        right: -40px;
+        top: -5px;
+        font-size: 1.5rem;
+        animation: spin-slow 10s linear infinite;
       }
     }
   }
@@ -46,48 +63,109 @@
     
     a {
       position: relative;
-      color: $color-gray-dark;
+      color: $color-white;
       text-decoration: none;
-      padding: $spacing-xs 0;
-      font-weight: 500;
-      @include transition;
-      
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background-color: $color-primary;
-        @include transition;
-      }
+      padding: $spacing-sm $spacing-lg;
+      font-weight: 600;
+      font-family: $font-family-heading;
+      border-radius: $border-radius-xl;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: $font-size-sm;
       
       &:hover {
-        color: $color-primary;
-        
-        &::after {
-          width: 100%;
-        }
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
       }
       
       &.active {
-        color: $color-primary;
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+  
+  .user-actions {
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      color: $color-white;
+      font-weight: 600;
+      
+      span {
+        font-family: $font-family-heading;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         
-        &::after {
-          width: 100%;
+        &::before {
+          content: '👋 ';
+          animation: wave 2s ease-in-out infinite;
         }
+      }
+    }
+    
+    .btn-logout,
+    .btn-login {
+      @include button($color-white, $color-primary);
+      font-family: $font-family-heading;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+      
+      &:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
       }
     }
   }
   
   @include mobile {
-    .logo h1 {
-      font-size: $font-size-lg;
-    }
-    
-    .main-nav {
-      gap: $spacing-sm;
+    .header-content {
+      flex-direction: column;
+      gap: $spacing-md;
+      
+      .logo h1 {
+        font-size: $font-size-xl;
+      }
+      
+      .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: $spacing-sm;
+        
+        a {
+          padding: $spacing-xs $spacing-md;
+          font-size: $font-size-xs;
+        }
+      }
     }
   }
+}
+
+@keyframes rainbow-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes logo-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(20deg); }
+  75% { transform: rotate(-10deg); }
 }
