@@ -1,11 +1,11 @@
 import { storageService } from '../async-storage.service.js'
 import { utilService } from '../util.service.js'
-// import { socketService } from '../socket.service.js'
+import { socketService } from '../socket.service.js' 
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 const STORAGE_KEY_USER_DB = 'userDB'
 
-// For local development - ensure we have some users
+
 _createUsers()
 
 export const userService = {
@@ -20,7 +20,7 @@ export const userService = {
     getEmptyCredentials
 }
 
-// Demo data to not start with an empty users collection
+
 function _createUsers() {
     let users = JSON.parse(localStorage.getItem(STORAGE_KEY_USER_DB))
     if (!users || !users.length) {
@@ -45,7 +45,7 @@ function _createUsers() {
         localStorage.setItem(STORAGE_KEY_USER_DB, JSON.stringify(users))
     }
     
-    // Initialize users in storage service
+   
     storageService.query('user').then(storedUsers => {
         if (!storedUsers || !storedUsers.length) {
             storageService.postMany('user', users)
@@ -73,7 +73,7 @@ async function getById(userId) {
 
 async function update(user) {
     try {
-        // Clone only relevant fields for update
+ 
         const userToSave = {
             _id: user._id,
             fullname: user.fullname,
@@ -83,7 +83,6 @@ async function update(user) {
         
         const updatedUser = await storageService.put('user', userToSave)
         
-        // If it's the logged-in user, update the local user
         if (getLoggedinUser()?._id === user._id) {
             saveLocalUser(updatedUser)
         }
@@ -104,13 +103,13 @@ async function login(credentials) {
         )
         
         if (!user) throw new Error('Invalid username or password')
-        
-        // Don't send password to frontend
+ 
         const userWithoutPassword = { ...user }
         delete userWithoutPassword.password
         
         saveLocalUser(userWithoutPassword)
-        socketService.login(user._id)
+       
+        setTimeout(() => socketService.login(user._id), 100)
         
         return userWithoutPassword
     } catch (err) {
@@ -121,12 +120,11 @@ async function login(credentials) {
 
 async function signup(credentials) {
     try {
-        // Check if username already exists
+      
         const users = await storageService.query('user')
         const existingUser = users.find(user => user.username === credentials.username)
         if (existingUser) throw new Error('Username already taken')
         
-        // Create new user
         const newUser = {
             _id: utilService.makeId(),
             username: credentials.username,
@@ -138,12 +136,13 @@ async function signup(credentials) {
         
         const addedUser = await storageService.post('user', newUser)
         
-        // Don't send password to frontend
+      
         const userWithoutPassword = { ...addedUser }
         delete userWithoutPassword.password
         
         saveLocalUser(userWithoutPassword)
-        socketService.login(newUser._id)
+       
+        setTimeout(() => socketService.login(newUser._id), 100)
         
         return userWithoutPassword
     } catch (err) {
@@ -155,7 +154,7 @@ async function signup(credentials) {
 async function logout() {
     try {
         sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
-        socketService.logout()
+        socketService.logout() 
     } catch (err) {
         console.error('Failed to logout', err)
         throw err

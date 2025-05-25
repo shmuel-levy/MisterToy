@@ -1,5 +1,4 @@
 import io from 'socket.io-client'
-import { userService } from './user/index.js'
 
 export const SOCKET_EVENT_ADD_MSG = 'chat-add-msg'
 export const SOCKET_EMIT_SEND_MSG = 'chat-send-msg'
@@ -14,24 +13,36 @@ export const SOCKET_EVENT_REVIEW_ABOUT_YOU = 'review-about-you'
 const SOCKET_EMIT_LOGIN = 'set-user-socket'
 const SOCKET_EMIT_LOGOUT = 'unset-user-socket'
 
-
 const baseUrl = (process.env.NODE_ENV === 'production') ? '' : '//localhost:3030'
 export const socketService = createSocketService()
-// export const socketService = createDummySocketService()
 
-// for debugging from console
 window.socketService = socketService
 
-socketService.setup()
-
+document.addEventListener('DOMContentLoaded', () => {
+    socketService.setup()
+})
 
 function createSocketService() {
     var socket = null
     const socketService = {
-        setup() {
+        async setup() {
             socket = io(baseUrl)
-            const user = userService.getLoggedinUser()
-            if (user) this.login(user._id)
+            console.log('Socket service setup completed')
+    
+            setTimeout(async () => {
+                try {
+                    const { default: userService } = await import('./user')
+                    const user = await userService.getLoggedinUser()
+                    if (user && user._id) {
+                        console.log('Auto-reconnecting user:', user._id)
+                        this.login(user._id)
+                    } else {
+                        console.log('No logged in user to reconnect')
+                    }
+                } catch (err) {
+                    console.log('Could not auto-reconnect user:', err.message)
+                }
+            }, 500) 
         },
         on(eventName, cb) {
             socket.on(eventName, cb)
@@ -45,15 +56,22 @@ function createSocketService() {
             socket.emit(eventName, data)
         },
         login(userId) {
+            if (!socket) {
+                console.warn('Socket not connected yet, retrying...')
+                setTimeout(() => this.login(userId), 100)
+                return
+            }
+            console.log('Socket login for user:', userId)
             socket.emit(SOCKET_EMIT_LOGIN, userId)
         },
         logout() {
+            if (!socket) return
+            console.log('Socket logout')
             socket.emit(SOCKET_EMIT_LOGOUT)
         },
         terminate() {
             socket = null
         },
-
     }
     return socketService
 }
@@ -64,12 +82,13 @@ function createDummySocketService() {
         listenersMap,
         setup() {
             listenersMap = {}
+            console.log('Dummy socket service setup')
         },
         terminate() {
             this.setup()
         },
-        login() {
-            console.log('Dummy socket service here, login - got it')
+        login(userId) {
+            console.log('Dummy socket service here, login - got it for user:', userId)
         },
         logout() {
             console.log('Dummy socket service here, logout - got it')
@@ -94,24 +113,15 @@ function createDummySocketService() {
                 listener(data)
             })
         },
-        // Functions for easy testing of pushed data
+       
         testChatMsg() {
             this.emit(SOCKET_EVENT_ADD_MSG, { from: 'Someone', txt: 'Aha it worked!' })
         },
         testUserUpdate() {
-            this.emit(SOCKET_EVENT_USER_UPDATED, { ...userService.getLoggedinUser(), score: 555 })
+          
+            this.emit(SOCKET_EVENT_USER_UPDATED, { _id: 'test', fullname: 'Test User', score: 555 })
         }
     }
     window.listenersMap = listenersMap
     return socketService
 }
-
-
-// Basic Tests
-// function cb(x) {console.log('Socket Test - Expected Puk, Actual:', x)}
-// socketService.on('baba', cb)
-// socketService.on('baba', cb)
-// socketService.on('baba', cb)
-// socketService.on('mama', cb)
-// socketService.emit('baba', 'Puk')
-// socketService.off('baba', cb)

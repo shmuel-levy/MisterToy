@@ -1,5 +1,5 @@
 import { httpService } from '../http.service.js'
-// import { socketService } from '../socket.service.js'
+import { socketService } from '../socket.service.js' 
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 const BASE_URL = 'auth/'
@@ -51,7 +51,8 @@ async function login(credentials) {
         const user = await httpService.post(BASE_URL + 'login', credentials)
         if (user) {
             _saveLocalUser(user)
-            socketService.login(user._id)
+         
+            setTimeout(() => socketService.login(user._id), 100)
         }
         return user
     } catch (err) {
@@ -65,7 +66,8 @@ async function signup(credentials) {
         const user = await httpService.post(BASE_URL + 'signup', credentials)
         if (user) {
             _saveLocalUser(user)
-            socketService.login(user._id)
+        
+            setTimeout(() => socketService.login(user._id), 100)
         }
         return user
     } catch (err) {
@@ -78,7 +80,7 @@ async function logout() {
     try {
         await httpService.post(BASE_URL + 'logout')
         sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
-        socketService.logout()
+        socketService.logout() 
     } catch (err) {
         console.error('Failed to logout', err)
         throw err
